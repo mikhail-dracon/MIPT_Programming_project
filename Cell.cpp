@@ -3,6 +3,7 @@
 Cell::Cell(int x, int y, std::string Map_Texture) {
     x_coordinate = x;
     y_coordinate = y;
+    Scale = 1;
     Texture.loadFromFile(Map_Texture);
     Sprite = new sf::Sprite(Texture);
 }
@@ -46,4 +47,8 @@ void Cell::set_Sprite_Origin(float x, float y) {
 
 void Cell::set_Sprite_Position(float x, float y) {
     (*Sprite).setPosition({x, y});
+}
+
+void Cell::set_Scale_Sprite(float scale) {
+    (*Sprite).setScale({scale, scale});
 }

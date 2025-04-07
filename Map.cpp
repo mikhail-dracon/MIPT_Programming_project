@@ -9,7 +9,6 @@ Map::Map(unsigned int Map_Size, std::string Map_Texture) {
             Vector.push_back(New_Cell);
         }
         Cells_Data.push_back(Vector);
-        // Textures_Data.push_back(*Map_Texture);
     }
 }
 

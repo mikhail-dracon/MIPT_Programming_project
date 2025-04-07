@@ -7,29 +7,38 @@ Cell::Cell(int x, int y, std::string Map_Texture) {
     Sprite = new sf::Sprite(Texture);
 }
 
-Cell::~Cell() {}
+Cell::~Cell() {
+    delete Sprite;
+}
+
 int Cell::get_x_coordinate() const{
     return x_coordinate;
-    delete Sprite;
 }
 
 int Cell::get_y_coordinate() const{
     return y_coordinate;
 }
 
-std::string Cell::get_Texture() const {
+std::string Cell::get_Texture_Name() const {
     return Texture_Name;
 }
 
-void Cell::set_Sprite(sf::Texture* cell_texture) {
+sf::Sprite* Cell::get_Sprite_Pointer() const{
+    return Sprite;
+}
+
+void Cell::set_Sprite_By_Texture(sf::Texture* cell_texture) {
     Texture = *cell_texture;
     delete Sprite;
     Sprite = new sf::Sprite(Texture);
 }
 
-sf::Sprite* Cell::get_Sprite() const{
-    return Sprite;
+void Cell::set_Sprite_By_Texture(std::string cell_texture_name) {
+    Texture.loadFromFile(cell_texture_name);
+    delete Sprite;
+    Sprite = new sf::Sprite(Texture);
 }
+
 
 void Cell::set_Sprite_Origin(float x, float y) {
     (*Sprite).setOrigin({x, y});

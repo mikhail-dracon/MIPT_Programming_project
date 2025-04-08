@@ -19,6 +19,8 @@ float SCALE = 1;
 float SCAIL_SPEED = 0.015;
 float SPEED = 40;
 int FRAME_RATE = 60;
+int FRAME_X = 0;
+int FRAME_Y = 0;
 
 Map Map_Build(unsigned int Map_Size, std::string Map_Texture) {
     Map Created_Map(Map_Size, Map_Texture);
@@ -44,6 +46,40 @@ void fill_texture_vector(std::vector<std::string>* Texture_Vector) {
     Texture_Vector->push_back("../Textures/MarsHoulLendPattern.png");
     Texture_Vector->push_back("../Textures/MarsHoulLendPattern.png");
     Texture_Vector->push_back("../Textures/MarsHoulLendPattern.png");
+}
+
+void Map_Scale(int delta, std::string Scale_Type) {
+    if (Scale_Type == "Mouse") {
+        delta*=5;
+    }
+    if ((delta > 0) && (SCALE<1)) {
+        SCALE += SCAIL_SPEED*abs(delta);
+        ZERO_X -= (SCREEN_HEIGHT/2-ZERO_X)*SCAIL_SPEED/SCALE*abs(delta);
+        ZERO_Y -= (SCREEN_WIDTH/2-ZERO_Y)*SCAIL_SPEED/SCALE*abs(delta);
+    }
+    if ((delta < 0) && (SCALE>0.2)){
+        SCALE -= SCAIL_SPEED*abs(delta);
+        ZERO_X += (SCREEN_HEIGHT/2-ZERO_X)*SCAIL_SPEED/SCALE*abs(delta);
+        ZERO_Y += (SCREEN_WIDTH/2-ZERO_Y)*SCAIL_SPEED/SCALE*abs(delta);
+    }
+}
+
+void Pressed_Check(Map* Created_Map, sf::Sprite* Frame, int x, int y) {
+    for (int i = 0; i <Created_Map->Get_Size(); i++) {
+        for (int j = 0; j <Created_Map->Get_Size(); j++) {
+            float vector_x[2] = {0.5,-0.866};
+            float vector_y[2] = {0.5,0.866};
+            float k = 1/2.0f/0.88;
+            int cell_x = ZERO_Y+CELL_WIDTH*(i*vector_x[1]*k + j*vector_y[1]*k)*SCALE;
+            int cell_y = ZERO_X+CELL_HEIGHT*(i*vector_x[0]*k + j*vector_y[0]*k)*SCALE;
+            if ((abs(cell_x - x) < CELL_WIDTH/2*SCALE*0.7) && (cell_y - y < CELL_HEIGHT*SCALE) && (cell_y - y > CELL_HEIGHT*SCALE*0.5)) {
+                Set_Sprite_Static_Position(Frame, i, j);
+                FRAME_X = i;
+                FRAME_Y = j;
+                // Created_Map->Cells_Data[i][j]->get_Sprite_Pointer()->setOrigin({0,0});
+            }
+        }
+    }
 }
 
 int main() {
@@ -89,6 +125,16 @@ int main() {
             Set_Sprite_Static_Position(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer(),i,j);
         }
     }
+    // Создание рамку
+    sf::Texture Frame_texture;
+    if (!Frame_texture.loadFromFile("../Textures/FramePattern.png")) {
+        std::cerr << "Failed to load cell texture!" << std::endl;
+        return 1;
+    }
+    sf::Sprite Frame(Frame_texture);
+    Frame.setOrigin({CELL_WIDTH/2.0f, CELL_HEIGHT*1.0f});
+    Frame.setColor(sf::Color(255, 255, 255, 20));  // Полупрозрачный (альфа = 128)
+
 
     while (window.isOpen())
     {
@@ -96,6 +142,17 @@ int main() {
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
+            if (const auto* mouseWheelScrolled = event->getIf<sf::Event::MouseWheelScrolled>())
+            {
+                Map_Scale(mouseWheelScrolled->delta, "Mouse");
+            }
+            if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
+            {
+                if (mouseButtonPressed->button == sf::Mouse::Button::Left)
+                {
+                    Pressed_Check(&Created_Map, &Frame ,mouseButtonPressed->position.x, mouseButtonPressed->position.y);
+                }
+            }
         }
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) && (ZERO_X-(SCREEN_HEIGHT/2.0f)<SCREEN_HEIGHT/2.0f)){
             ZERO_X += SCALE*SPEED;
@@ -109,16 +166,14 @@ int main() {
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) && (ZERO_Y-SCALE*CELL_WIDTH*Created_Map.Get_Size()/2<SCREEN_WIDTH)){
             ZERO_Y += SCALE*SPEED;
         }
+
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) && (SCALE<1)) {
-            SCALE += SCAIL_SPEED;
-            ZERO_X -= (SCREEN_HEIGHT/2-ZERO_X)*SCAIL_SPEED/SCALE;
-            ZERO_Y -= (SCREEN_WIDTH/2-ZERO_Y)*SCAIL_SPEED/SCALE;
+            Map_Scale(1, "Keyboard");
         }
-        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) && (SCALE>0.2)){
-            SCALE -= SCAIL_SPEED;
-            ZERO_X += (SCREEN_HEIGHT/2-ZERO_X)*SCAIL_SPEED/SCALE;
-            ZERO_Y += (SCREEN_WIDTH/2-ZERO_Y)*SCAIL_SPEED/SCALE;
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) && (SCALE>0.2)) {
+            Map_Scale(-1, "Keyboard");
         }
+
 
         window.clear(sf::Color::Black);
         // Отрисовка клеточек
@@ -128,6 +183,9 @@ int main() {
                 Created_Map.Cells_Data[i][j]->set_Scale_Sprite(SCALE);
                 window.draw(*(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer()));
             }
+            Frame.setScale({SCALE, SCALE});
+            Set_Sprite_Static_Position(&Frame, FRAME_X, FRAME_Y);
+            window.draw(Frame);
         }
         window.display();
         sf::sleep(sf::milliseconds(1000/FRAME_RATE));

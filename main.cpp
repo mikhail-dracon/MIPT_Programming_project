@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <optional>
-#include <random>
+// #include <optional>
+// #include <random>
 #include "Map.h"
 #include "Texture_List.h"
 
@@ -34,20 +34,6 @@ void Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y) {
     (*Sprite).setPosition({ZERO_Y+CELL_WIDTH*(x*vector_x[1]*k + y*vector_y[1]*k)*SCALE, ZERO_X+CELL_HEIGHT*(x*vector_x[0]*k + y*vector_y[0]*k)*SCALE});
 }
 
-// Чем больше одинаковых элементов, тем больше шанс его спавна
-void fill_texture_vector(std::vector<std::string>* Texture_Vector) {
-    Texture_Vector->push_back("../Textures/MarsLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsMountainLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsMountainLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsHoulLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsHoulLendPattern.png");
-    Texture_Vector->push_back("../Textures/MarsHoulLendPattern.png");
-}
-
 void Map_Scale(int delta, std::string Scale_Type) {
     if (Scale_Type == "Mouse") {
         delta*=5;
@@ -64,6 +50,7 @@ void Map_Scale(int delta, std::string Scale_Type) {
     }
 }
 
+/////////////////////////////////////////////////////////////////
 void Pressed_Check(Map* Created_Map, sf::Sprite* Frame, int x, int y) {
     for (int i = 0; i <Created_Map->Get_Size(); i++) {
         for (int j = 0; j <Created_Map->Get_Size(); j++) {
@@ -76,11 +63,11 @@ void Pressed_Check(Map* Created_Map, sf::Sprite* Frame, int x, int y) {
                 Set_Sprite_Static_Position(Frame, i, j);
                 FRAME_X = i;
                 FRAME_Y = j;
-                // Created_Map->Cells_Data[i][j]->get_Sprite_Pointer()->setOrigin({0,0});
             }
         }
     }
 }
+/////////////////////////////////////////////////////////////////
 
 int main() {
     // Запуск окна
@@ -107,10 +94,10 @@ int main() {
     // Создание карты
     std::string texture_name = "../Textures/BasicLendPattern.png";
     Map Created_Map = Map_Build(20, texture_name);
+
     // Создаем вектор из всех используемых текстур клеточек
-    std::vector<std::string> Texture_Vector;
-    fill_texture_vector(&Texture_Vector);
-    Texture_List texture_list(&Created_Map, Texture_Vector);
+    Texture_List texture_list(&Created_Map, "Standart");
+
     // Приступаем к переопределению клеточек
     for (unsigned int i = 0; i < Created_Map.Get_Size(); i++) {
         for (unsigned int j = 0; j < Created_Map.Get_Size(); j++) {
@@ -133,7 +120,7 @@ int main() {
     }
     sf::Sprite Frame(Frame_texture);
     Frame.setOrigin({CELL_WIDTH/2.0f, CELL_HEIGHT*1.0f});
-    Frame.setColor(sf::Color(255, 255, 255, 20));  // Полупрозрачный (альфа = 128)
+    Frame.setColor(sf::Color(255, 255, 255, 150));  // Полупрозрачный (альфа = 128)
 
 
     while (window.isOpen())
@@ -183,10 +170,13 @@ int main() {
                 Created_Map.Cells_Data[i][j]->set_Scale_Sprite(SCALE);
                 window.draw(*(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer()));
             }
-            Frame.setScale({SCALE, SCALE});
-            Set_Sprite_Static_Position(&Frame, FRAME_X, FRAME_Y);
-            window.draw(Frame);
         }
+        /////////////////////////////////////////////////////////////////
+        Frame.setScale({SCALE, SCALE});
+        Set_Sprite_Static_Position(&Frame, FRAME_X, FRAME_Y);
+        window.draw(Frame);
+        /////////////////////////////////////////////////////////////////
+
         window.display();
         sf::sleep(sf::milliseconds(1000/FRAME_RATE));
     }

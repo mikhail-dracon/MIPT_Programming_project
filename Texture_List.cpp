@@ -16,6 +16,24 @@ Texture_List::Texture_List(Map* Created_Map, std::vector<std::string>& texture_n
     Map_Pointer = Created_Map;
 }
 
+Texture_List::Texture_List(Map* Created_Map, std::string Constructor_Type) {
+    for (auto it = 0; it != 10; it++) {
+        Texture_Chances.push_back(1);
+    }
+    Map_Pointer = Created_Map;
+    // Чем больше одинаковых элементов, тем больше шанс его спавна
+    Texture_Names.push_back("../Textures/MarsLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsMountainLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsMountainLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsHoulLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsHoulLendPattern.png");
+    Texture_Names.push_back("../Textures/MarsHoulLendPattern.png");
+}
+
 Texture_List::~Texture_List() {}
 
 std::string Texture_List::creat_Random_Texture_Name(int x_coord, int y_coord) {

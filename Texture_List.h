@@ -11,6 +11,7 @@ class Texture_List {
     Map* Map_Pointer;
 public:
     Texture_List(Map* Created_Map, std::vector<std::string>&);
+    Texture_List(Map* Created_Map,  std::string Constructor_Type);
     ~Texture_List();
     std::string creat_Random_Texture_Name(int x_coord, int y_coord);
 };

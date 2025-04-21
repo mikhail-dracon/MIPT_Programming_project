@@ -12,7 +12,9 @@ add_executable(MIPT main.cpp
         Cell.cpp
         Map.cpp
         Texture_List.cpp
-        Texture_List.h)
+        building.cpp
+        Building_List.cpp
+        Available_Buildings.cpp)
 
 find_package(SFML COMPONENTS System Window Graphics REQUIRED)
 target_link_libraries(MIPT sfml-graphics sfml-window sfml-system)

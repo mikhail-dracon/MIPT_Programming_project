@@ -2,8 +2,10 @@
 #include <iostream>
 // #include <optional>
 // #include <random>
+#include "Available_Buildings.h"
 #include "Map.h"
 #include "Texture_List.h"
+#include "Building_List.h"
 
 // Размеры экрана
 unsigned int SCREEN_WIDTH = 0;
@@ -16,11 +18,13 @@ float ZERO_X = 0;
 float ZERO_Y = 0;
 // Масштаб
 float SCALE = 1;
-float SCAIL_SPEED = 0.015;
-float SPEED = 40;
+float SCAIL_SPEED = 0.015; // Скорость зума
+float SPEED = 40; // Скорость перемещения по карте
 int FRAME_RATE = 60;
-int FRAME_X = 0;
-int FRAME_Y = 0;
+
+std::string BUILDING_TEXTURE = ""; // Текстура создаваемой сущности
+int PLAYER_NUMBER = 1;
+int MONEY = 1000;
 
 Map Map_Build(unsigned int Map_Size, std::string Map_Texture) {
     Map Created_Map(Map_Size, Map_Texture);
@@ -50,8 +54,7 @@ void Map_Scale(int delta, std::string Scale_Type) {
     }
 }
 
-/////////////////////////////////////////////////////////////////
-void Pressed_Check(Map* Created_Map, sf::Sprite* Frame, int x, int y) {
+void Pressed_Check(Map* Created_Map, Available_Buildings* available_buildings, Building_List* building_list, int x, int y) {
     for (int i = 0; i <Created_Map->Get_Size(); i++) {
         for (int j = 0; j <Created_Map->Get_Size(); j++) {
             float vector_x[2] = {0.5,-0.866};
@@ -60,14 +63,20 @@ void Pressed_Check(Map* Created_Map, sf::Sprite* Frame, int x, int y) {
             int cell_x = ZERO_Y+CELL_WIDTH*(i*vector_x[1]*k + j*vector_y[1]*k)*SCALE;
             int cell_y = ZERO_X+CELL_HEIGHT*(i*vector_x[0]*k + j*vector_y[0]*k)*SCALE;
             if ((abs(cell_x - x) < CELL_WIDTH/2*SCALE*0.7) && (cell_y - y < CELL_HEIGHT*SCALE) && (cell_y - y > CELL_HEIGHT*SCALE*0.5)) {
-                Set_Sprite_Static_Position(Frame, i, j);
-                FRAME_X = i;
-                FRAME_Y = j;
+                Set_Sprite_Static_Position(building_list->Find_Building("../Textures/FramePattern.png")->get_Sprite_Pointer(), i, j);
+                building_list->Find_Building("../Textures/FramePattern.png")->set_x_coordinate(i);
+                building_list->Find_Building("../Textures/FramePattern.png")->set_y_coordinate(j);
+                if (BUILDING_TEXTURE != ""){ // Доступ к сущности уже был проверен перед вызовом
+                    if ((*building_list).Add_Building(i,j,BUILDING_TEXTURE,BUILDING_TEXTURE)) {
+                        MONEY -= 100;
+                    } // Доделать определение ключа текстуры
+                    building_list->Find_Building(i,j,BUILDING_TEXTURE)->set_Sprite_Origin(CELL_WIDTH/2.0f, CELL_HEIGHT*1.0f);
+                    BUILDING_TEXTURE = "";
+                }
             }
         }
     }
 }
-/////////////////////////////////////////////////////////////////
 
 int main() {
     // Запуск окна
@@ -87,6 +96,17 @@ int main() {
     CELL_WIDTH = scaledBounds.size.x; // Эталонный размер клетки
     CELL_HEIGHT = scaledBounds.size.y; // Эталонный размер клетки
 
+    // Создание фона
+    sf::Texture sky_texture;
+    if (!sky_texture.loadFromFile("../Textures/Sky.png")) {
+        std::cerr << "Failed to load sky texture!" << std::endl;
+        return 1;
+    }
+    sf::Sprite Sky_Sprite(sky_texture);
+    sf::FloatRect ScaledBounds = (Sky_Sprite).getGlobalBounds();
+    float Sky_WIDTH = ScaledBounds.size.x;
+    Sky_Sprite.setScale({SCREEN_WIDTH/Sky_WIDTH,SCREEN_WIDTH/Sky_WIDTH});
+
     // Установка начала координат
     ZERO_X = (SCREEN_HEIGHT/20)*8.0f;
     ZERO_Y = (SCREEN_WIDTH/2)*1.0f;
@@ -97,6 +117,15 @@ int main() {
 
     // Создаем вектор из всех используемых текстур клеточек
     Texture_List texture_list(&Created_Map, "Standart");
+
+    // Создаем словарь доступных для разных игроков сущностей
+    Available_Buildings available_buildings;
+
+    // Создаем вектор сущностей и добавляем в него рамку
+    Building_List building_list;
+    building_list.Add_Building(0,0,"../Textures/FramePattern.png","../Textures/FramePattern.png");
+    building_list.Find_Building("../Textures/FramePattern.png")->set_Sprite_Origin(CELL_WIDTH/2.0f, CELL_HEIGHT*1.0f);
+    building_list.Find_Building("../Textures/FramePattern.png")->set_Sprite_Color(255, 255, 255, 150);
 
     // Приступаем к переопределению клеточек
     for (unsigned int i = 0; i < Created_Map.Get_Size(); i++) {
@@ -112,19 +141,10 @@ int main() {
             Set_Sprite_Static_Position(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer(),i,j);
         }
     }
-    // Создание рамку
-    sf::Texture Frame_texture;
-    if (!Frame_texture.loadFromFile("../Textures/FramePattern.png")) {
-        std::cerr << "Failed to load cell texture!" << std::endl;
-        return 1;
-    }
-    sf::Sprite Frame(Frame_texture);
-    Frame.setOrigin({CELL_WIDTH/2.0f, CELL_HEIGHT*1.0f});
-    Frame.setColor(sf::Color(255, 255, 255, 150));  // Полупрозрачный (альфа = 128)
-
 
     while (window.isOpen())
     {
+        // Обработка ввода
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
@@ -137,7 +157,7 @@ int main() {
             {
                 if (mouseButtonPressed->button == sf::Mouse::Button::Left)
                 {
-                    Pressed_Check(&Created_Map, &Frame ,mouseButtonPressed->position.x, mouseButtonPressed->position.y);
+                    Pressed_Check(&Created_Map, &available_buildings, &building_list ,mouseButtonPressed->position.x, mouseButtonPressed->position.y);
                 }
             }
         }
@@ -161,8 +181,16 @@ int main() {
             Map_Scale(-1, "Keyboard");
         }
 
+        // Обработка выбора сущности
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
+            available_buildings.Check_Access(1, "../Textures/grass.png");
+            BUILDING_TEXTURE = "../Textures/grass.png";
+        }
 
+        // Отрисовка
         window.clear(sf::Color::Black);
+        // Отрисовка фона
+        window.draw(Sky_Sprite);
         // Отрисовка клеточек
         for (unsigned int i = 0; i < Created_Map.Get_Size(); i++) {
             for (unsigned int j = 0; j < Created_Map.Get_Size(); j++) {
@@ -171,14 +199,17 @@ int main() {
                 window.draw(*(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer()));
             }
         }
-        /////////////////////////////////////////////////////////////////
-        Frame.setScale({SCALE, SCALE});
-        Set_Sprite_Static_Position(&Frame, FRAME_X, FRAME_Y);
-        window.draw(Frame);
-        /////////////////////////////////////////////////////////////////
+        // Отрисовка элементов из Building_List
+        for (auto it = building_list.Buildings.begin(); it!= building_list.Buildings.end(); it++) {
+            it->second->set_Sprite_Scale(SCALE);
+            Set_Sprite_Static_Position(it->second->get_Sprite_Pointer(), it->second->get_x_coordinate(), it->second->get_y_coordinate());
+            window.draw(*(it->second->get_Sprite_Pointer()));
+        }
 
         window.display();
         sf::sleep(sf::milliseconds(1000/FRAME_RATE));
+
+        // std::cout<<MONEY<<'\n';
     }
     std::cout << "Yep!" << std::endl;
 }

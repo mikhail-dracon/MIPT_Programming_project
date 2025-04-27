@@ -1,6 +1,13 @@
 #include "Available_Buildings.h"
 
 // Каждый ключ соответствует своему игроку и дает ему доступ к сущности
+
+// ВНИМАНИЕ! Этодж метод пишется вручную
+// Сюда мы добавляем все возможные во время постройки
+// Т.е. программист заранее вписывает, какому игроку, что можно кдет строить
+// Пример: Buildings.insert(std::pair<int, std::string>(1, "../grass.png"));
+// Таким образом: мы добавили в словарь элемент "../grass.png", которому присвоили ключ 1
+// Это значит что игрок с номером 1 может создавать building с текстурой "../grass.png"
 Available_Buildings::Available_Buildings() {
     Buildings.insert(std::pair<int, std::string>(1, "../grass.png"));
 }
@@ -9,6 +16,9 @@ Available_Buildings::~Available_Buildings() {
     Buildings.clear();
 }
 
+
+// Чтобы проверить доступ к элементу, т.е. узнать, можно ли мне его поставить,
+// Нужно сообщить свой номер (ключ) и имя текстуры постройки, которую мы хотим создать
 bool Available_Buildings::Check_Access(int Player_Number, std::string building_name) {
     auto range = Buildings.equal_range(Player_Number);
     for (auto it = range.first; it != range.second; it++) {

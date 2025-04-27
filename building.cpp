@@ -1,10 +1,16 @@
 #include "building.h"
 
+// Экспресс тур в понятие спрайта
+// Спрайт - это прямоуголььник у которого есть своя текстура (картинка png),
+// свои размеры, корневая точка и ее координаты
+// Именно этот объект отрисовывает SFML
 building::building(int x, int y, std::string Building_Texture) {
     x_coordinate = x;
     y_coordinate = y;
     Scale = 1;
+    // Создаем объект текстуры
     Texture.loadFromFile(Building_Texture);
+    // Создаем спрайт в динамической памяти и запоминаем указатель на него
     Sprite = new sf::Sprite(Texture);
 }
 

@@ -4,6 +4,8 @@
 #include <vector>
 #include "Map.h"
 
+// Этого дурачка надо еще причесывать, но самые необходимые вещи он уже умеет
+// При всем остальном, он не знает своего хозяина, хозяина знает только класс Building_List
 class building {
     int x_coordinate;
     int y_coordinate;

@@ -5,14 +5,22 @@
 #include <map>
 #include "building.h"
 
+// Словарь, содержащий сведения о всех постройках на карте.
+// (Он знает координаты, текстуры и владельцев каждого объекта)
+// Ключ элемента = номеру игрока
+// Текстура хранится в качестве строки указывающий на место хранения текстуры (папка Textures)
+
 class Building_List {
     // std::multimap<std::string, building*> Buildings;
 public:
     std::multimap<std::string, building*> Buildings;
     Building_List();
     ~Building_List();
+    // Мы умеем добавлять новую постройку на карту
     bool Add_Building(int x, int y, std::string key, std::string texture);
+    // Мы умеем их удалять
     bool Destroy_Building(int x_coord, int y_coord, std::string key);
+    // Если требуется обратиться к конкретному building снаружи, мы можем предоставить указатель на него
     building* Find_Building(int x_coord, int y_coord, std::string key);
     building* Find_Building(std::string key);
 };

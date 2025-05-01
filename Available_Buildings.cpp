@@ -8,10 +8,8 @@
 // Пример: Buildings.insert(std::pair<int, std::string>(1, "../grass.png"));
 // Таким образом: мы добавили в словарь элемент "../grass.png", которому присвоили ключ 1
 // Это значит что игрок с номером 1 может создавать building с текстурой "../grass.png"
-// Это тестовое изменение
-// ФАКИ ЧЕМПИОН
 Available_Buildings::Available_Buildings() {
-    Buildings.insert(std::pair<int, std::string>(1, "../grass.png"));
+    Buildings.insert(std::pair<int, std::string>(1, "../Textures/Barracks.png"));
 }
 
 Available_Buildings::~Available_Buildings() {

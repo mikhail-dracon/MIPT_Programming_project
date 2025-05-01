@@ -2,7 +2,9 @@
 #define BUILDING_H
 #include <string>
 #include <vector>
-#include "Map.h"
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
+// #include "Map.h"
 
 // Этого дурачка надо еще причесывать, но самые необходимые вещи он уже умеет
 // При всем остальном, он не знает своего хозяина, хозяина знает только класс Building_List

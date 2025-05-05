@@ -150,11 +150,11 @@ std::vector<int> Map::get_pressed_sell_position(int x, int y) {
 
 void Map::Map_Scale(int delta, std::string Scale_Type, std::map<std::string, float>* Constants) {
     float SCAIL_SPEED = (*Constants)["SCAIL_SPEED"];
-    std::cout << "SCAIL_SPEED: " << SCAIL_SPEED << std::endl;
+    // std::cout << "SCAIL_SPEED: " << SCAIL_SPEED << std::endl;
     float SCREEN_HEIGHT = (*Constants)["SCREEN_HEIGHT"];
-    std::cout << "SCREEN_HEIGHT: " << SCREEN_HEIGHT << std::endl;
+    // std::cout << "SCREEN_HEIGHT: " << SCREEN_HEIGHT << std::endl;
     float SCREEN_WIDTH = (*Constants)["SCREEN_WIDTH"];
-    std::cout << "SCREEN_WIDTH: " << SCREEN_WIDTH << std::endl;
+    // std::cout << "SCREEN_WIDTH: " << SCREEN_WIDTH << std::endl;
     if (Scale_Type == "Mouse") {
         delta*=5;
     }

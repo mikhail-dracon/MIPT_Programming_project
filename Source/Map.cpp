@@ -116,12 +116,20 @@ void Map::Pressed_Check(std::vector<int>* v) {
     building_list->Find_Building("../Textures/FramePattern.png")->set_x_coordinate(x);
     building_list->Find_Building("../Textures/FramePattern.png")->set_y_coordinate(y);
     // Обрабатываем строительство
-    if (BUILDING_TEXTURE != ""){ // Доступ к сущности уже был проверен перед вызовом
-        if ((*building_list).Add_Building(x,y,BUILDING_TEXTURE,BUILDING_TEXTURE)) {
+    if (BUILDING_TEXTURE != "") { // Доступ к сущности уже был проверен перед вызовом
+        if ((*building_list).Add_Building(x, y, BUILDING_TEXTURE, BUILDING_TEXTURE)) {
             // MONEY -= 100;
         } // Доделать определение ключа текстуры
-        building_list->Find_Building(x,y,BUILDING_TEXTURE)->set_Sprite_Origin(CELL_WIDTH/2.0f, CELL_HEIGHT*1.0f);
+        building_list->Find_Building(x, y, BUILDING_TEXTURE)->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
         BUILDING_TEXTURE = "";
+    } else {
+//        std::cout<<building_list->Find_Building(x, y, "../Textures/Barracks.png")<<'\n';
+       if(building_list->Find_Building(x, y, "../Textures/Barracks.png") != nullptr){
+//           std::cout<<"WTF!"<<'\n';
+           building_list->Find_Building(x, y, "../Textures/Barracks.png")->set_health(-50);
+           building_list->Check_Health(x, y, "../Textures/Barracks.png");
+//           std::cout<<"Health is: "<<building_list->Find_Building(x, y, "../Textures/Barracks.png")->get_health()<<'\n';
+       }
     }
 }
 
@@ -169,6 +177,3 @@ void Map::Map_Scale(int delta, std::string Scale_Type, std::map<std::string, flo
         ZERO_Y += (SCREEN_WIDTH/2-ZERO_Y)*SCAIL_SPEED/SCALE*abs(delta);
     }
 }
-
-
-

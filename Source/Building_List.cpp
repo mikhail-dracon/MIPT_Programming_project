@@ -63,3 +63,8 @@ building* Building_List::Find_Building(std::string key) {
     return nullptr;
 }
 
+void Building_List::Check_Health(int x_coord, int y_coord, std::string key) {
+    if (Find_Building(x_coord, y_coord, key)->get_health() <= 0){
+        Destroy_Building(x_coord, y_coord, key);
+    }
+}

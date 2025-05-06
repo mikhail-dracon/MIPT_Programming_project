@@ -24,6 +24,7 @@ public:
     // Если требуется обратиться к конкретному building снаружи, мы можем предоставить указатель на него
     building* Find_Building(int x_coord, int y_coord, std::string key);
     building* Find_Building(std::string key);
+    void Check_Health(int x_coord, int y_coord, std::string key);
 };
 
 

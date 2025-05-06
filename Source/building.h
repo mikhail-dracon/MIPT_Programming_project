@@ -9,12 +9,19 @@
 // Этого дурачка надо еще причесывать, но самые необходимые вещи он уже умеет
 // При всем остальном, он не знает своего хозяина, хозяина знает только класс Building_List
 class building {
+protected:
     int x_coordinate;
     int y_coordinate;
     float Scale;
     sf::Sprite* Sprite;
     sf::Texture Texture;
     std::string Texture_Name;
+    int health;
+    int owner_id; // здесь имеется в виду номер игрока или бота, необходимо для функции захвата
+    bool ability_unit; // возможность создание юнитов
+    bool ability_money; // наличие денег
+    //int unit_limit;
+    //int create_units; // количество юнитов, созданных одним объектом класса
 public:
     building(int x, int y, std::string texture);
     ~building();
@@ -30,6 +37,12 @@ public:
     void set_Sprite_Position(float x, float y);
     void set_Sprite_Scale(float scale);
     void set_Sprite_Color(int r, int g, int b, int a);
+    //bool Create_Unit(); // создание юнита
+    void set_health(int delta_health); // лечение/по ебалу получение
+    //bool Can_Create_Unit() const; // проверка лимита
+    int get_owner_id() const;
+    int get_health() const;
+
 };
 
 

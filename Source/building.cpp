@@ -4,10 +4,13 @@
 // Спрайт - это прямоуголььник у которого есть своя текстура (картинка png),
 // свои размеры, корневая точка и ее координаты
 // Именно этот объект отрисовывает SFML
-building::building(int x, int y, std::string Building_Texture) {
+building::building(int x, int y, std::string Building_Texture)  {
     x_coordinate = x;
     y_coordinate = y;
     Scale = 1;
+    health = 100;
+    ability_money = false;
+    ability_unit = false;
     // Создаем объект текстуры
     Texture.loadFromFile(Building_Texture);
     // Создаем спрайт в динамической памяти и запоминаем указатель на него
@@ -70,4 +73,11 @@ void building::set_Sprite_Scale(float scale) {
 void building::set_Sprite_Color(int r, int g, int b, int a) {
     sf::Color color = sf::Color(r, g, b, a);
     (*Sprite).setColor(color);
+}
+void building::set_health(int delta_health){
+    health += delta_health;
+
+}
+int building::get_health() const {
+    return health;
 }

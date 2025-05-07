@@ -228,6 +228,7 @@ bool Building_List::Move(int x, int y) {
                 for (auto& pair : Buildings) {
                     if ((pair.first == "Warrior" || pair.first == "Miner") && pair.second) {
                         pair.second->Action(-1);
+                        // I just want this shit to work 2:08 08.05.2025
                     }
                 }
                 return true;

@@ -6,8 +6,6 @@
 #include <SFML/Graphics/Texture.hpp>
 // #include "Map.h"
 
-// Этого дурачка надо еще причесывать, но самые необходимые вещи он уже умеет
-// При всем остальном, он не знает своего хозяина, хозяина знает только класс Building_List
 class building {
 protected:
     int x_coordinate;
@@ -16,15 +14,14 @@ protected:
     sf::Sprite* Sprite;
     sf::Texture Texture;
     std::string Texture_Name;
+    std::string Teg;
     int health;
     int owner_id; // здесь имеется в виду номер игрока или бота, необходимо для функции захвата
     bool ability_unit; // возможность создание юнитов
     bool ability_money; // наличие денег
-    //int unit_limit;
-    //int create_units; // количество юнитов, созданных одним объектом класса
 public:
-    building(int x, int y, std::string texture);
-    ~building();
+    building(int x, int y, std::string texture); // базовое здоровье = 100
+    virtual ~building() = default;
     int get_x_coordinate() const;
     int get_y_coordinate() const;
     void set_x_coordinate(int value);
@@ -37,11 +34,13 @@ public:
     void set_Sprite_Position(float x, float y);
     void set_Sprite_Scale(float scale);
     void set_Sprite_Color(int r, int g, int b, int a);
-    //bool Create_Unit(); // создание юнита
     void set_health(int delta_health); // лечение/по ебалу получение
-    //bool Can_Create_Unit() const; // проверка лимита
+    void set_owner_id(int owner_id);
     int get_owner_id() const;
     int get_health() const;
+    std::string get_Teg() const;
+    virtual void Action(int i); // флаг в каком направлении делать действие
+    virtual bool get_Action() const;
 
 };
 

@@ -13,6 +13,7 @@ class Map{
     float ZERO_Y;
     float CELL_WIDTH;
     float CELL_HEIGHT;
+    int PLAYER_NUMBER;
     Building_List* building_list;
     Available_Buildings* available_buildings;
     std::string BUILDING_TEXTURE; // Здание, которое мы хотим создать
@@ -42,6 +43,7 @@ public:
     Available_Buildings* get_Available_buildings();
     void Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y);
     void Map_Scale(int delta, std::string Scale_Type, std::map<std::string, float>* Constants);
+    void set_Player_Number();
 };
 
 #endif //MAP_H

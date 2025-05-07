@@ -1,5 +1,13 @@
 #include "building.h"
 
+std::string extract_filename_b(const std::string& path) {
+    size_t start = path.find_last_of("/\\") + 1;
+    size_t end = path.find_last_of('.');
+    if (end == std::string::npos) end = path.length();
+    // std::cout<<path.substr(start, end - start)<<'\n';
+    return path.substr(start, end - start);
+}
+
 // Экспресс тур в понятие спрайта
 // Спрайт - это прямоуголььник у которого есть своя текстура (картинка png),
 // свои размеры, корневая точка и ее координаты
@@ -9,17 +17,21 @@ building::building(int x, int y, std::string Building_Texture)  {
     y_coordinate = y;
     Scale = 1;
     health = 100;
-    ability_money = false;
+    Teg = "";
+    owner_id = 0;
     ability_unit = false;
+    ability_money = false;
     // Создаем объект текстуры
     Texture.loadFromFile(Building_Texture);
     // Создаем спрайт в динамической памяти и запоминаем указатель на него
     Sprite = new sf::Sprite(Texture);
+    Texture_Name = Building_Texture;
+    Teg = extract_filename_b(Texture_Name);
 }
 
-building::~building() {
-    delete Sprite;
-}
+// building::~building() {
+    // delete Sprite;
+// }
 
 int building::get_x_coordinate() const{
     return x_coordinate;
@@ -76,8 +88,21 @@ void building::set_Sprite_Color(int r, int g, int b, int a) {
 }
 void building::set_health(int delta_health){
     health += delta_health;
-
 }
 int building::get_health() const {
     return health;
+}
+void building::set_owner_id(int Owner_id){
+    owner_id = Owner_id;
+}
+std::string building::get_Teg() const {
+    return Teg;
+}
+
+void building::Action(int i) {
+    return;
+}
+
+bool building::get_Action() const {
+    return false;
 }

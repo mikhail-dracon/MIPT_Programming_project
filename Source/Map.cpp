@@ -1,5 +1,13 @@
 #include "Map.h"
 
+std::string extract_filename_M(const std::string& path) {
+    size_t start = path.find_last_of("/\\") + 1;
+    size_t end = path.find_last_of('.');
+    if (end == std::string::npos) end = path.length();
+    // std::cout<<path.substr(start, end - start)<<'\n';
+    return path.substr(start, end - start);
+}
+
 Map::Map(unsigned int Map_Size, std::string Map_Texture) {
     // Создаем словарь доступных для разных игроков сущностей
     Available_Buildings *Available_buildings = new Available_Buildings();
@@ -20,6 +28,7 @@ Map::Map(unsigned int Map_Size, std::string Map_Texture) {
     ZERO_Y = 0;
     CELL_WIDTH = 0;
     CELL_HEIGHT = 0;
+    PLAYER_NUMBER = 1;
     building_list = Building_list;
     available_buildings = Available_buildings;
     BUILDING_TEXTURE = "";
@@ -32,7 +41,9 @@ Map::~Map() {
         }
     }
     Cells_Data.clear();
+    // building_list->~Building_List();
     delete building_list;
+    // available_buildings->~Available_Buildings();
     delete available_buildings;
 }
 
@@ -96,9 +107,13 @@ Available_Buildings *Map::get_Available_buildings() {
     return available_buildings;
 }
 
-void Map::set_BUILDING_TEXTURE(std::string texture) {
-    BUILDING_TEXTURE = texture;
+void Map::set_Player_Number() {
+    PLAYER_NUMBER ++;
+    if (PLAYER_NUMBER>2) {
+        PLAYER_NUMBER = 1;
+    }
 }
+
 
 
 void Map::Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y) {
@@ -112,25 +127,28 @@ void Map::Pressed_Check(std::vector<int>* v) {
     int x = (*v)[0];
     int y = (*v)[1];
     // Устанавливаем рамку над нажатой клеточкой
-    Set_Sprite_Static_Position(building_list->Find_Building("../Textures/FramePattern.png")->get_Sprite_Pointer(), building_list->Find_Building("../Textures/FramePattern.png")->get_x_coordinate(), building_list->Find_Building("../Textures/FramePattern.png")->get_y_coordinate());
-    building_list->Find_Building("../Textures/FramePattern.png")->set_x_coordinate(x);
-    building_list->Find_Building("../Textures/FramePattern.png")->set_y_coordinate(y);
+    // building_list->Select_Building(x,y);
+    Set_Sprite_Static_Position(building_list->Find_Building("FramePattern")->get_Sprite_Pointer(), building_list->Find_Building("FramePattern")->get_x_coordinate(), building_list->Find_Building("FramePattern")->get_y_coordinate());
+    building_list->Find_Building("FramePattern")->set_x_coordinate(x);
+    building_list->Find_Building("FramePattern")->set_y_coordinate(y);
     // Обрабатываем строительство
     if (BUILDING_TEXTURE != "") { // Доступ к сущности уже был проверен перед вызовом
-        if ((*building_list).Add_Building(x, y, BUILDING_TEXTURE, BUILDING_TEXTURE)) {
-            // MONEY -= 100;
-        } // Доделать определение ключа текстуры
-        building_list->Find_Building(x, y, BUILDING_TEXTURE)->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
-        BUILDING_TEXTURE = "";
+        if (building_list->Add_Building(x, y, BUILDING_TEXTURE)) {
+            building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
+            building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_owner_id(PLAYER_NUMBER);
+            // BUILDING_TEXTURE = "";
+        } /*else {
+            building_list->Select_Building(x, y, BUILDING_TEXTURE);
+            building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
+            building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_owner_id(PLAYER_NUMBER);
+            // BUILDING_TEXTURE = "";
+            //функция для создания юнитов и других подвижных сущностей// Доделать определение ключа текстуры
+        }*/
     } else {
-//        std::cout<<building_list->Find_Building(x, y, "../Textures/Barracks.png")<<'\n';
-       if(building_list->Find_Building(x, y, "../Textures/Barracks.png") != nullptr){
-//           std::cout<<"WTF!"<<'\n';
-           building_list->Find_Building(x, y, "../Textures/Barracks.png")->set_health(-50);
-           building_list->Check_Health(x, y, "../Textures/Barracks.png");
-//           std::cout<<"Health is: "<<building_list->Find_Building(x, y, "../Textures/Barracks.png")->get_health()<<'\n';
-       }
+        building_list->Hit(x,y);
+        building_list->Move(x,y);
     }
+    BUILDING_TEXTURE = "";
 }
 
 std::vector<int> Map::get_pressed_sell_position(int x, int y) {
@@ -176,4 +194,12 @@ void Map::Map_Scale(int delta, std::string Scale_Type, std::map<std::string, flo
         ZERO_X += (SCREEN_HEIGHT/2-ZERO_X)*SCAIL_SPEED/SCALE*abs(delta);
         ZERO_Y += (SCREEN_WIDTH/2-ZERO_Y)*SCAIL_SPEED/SCALE*abs(delta);
     }
+}
+
+void Map::set_BUILDING_TEXTURE(std::string texture) {
+    BUILDING_TEXTURE = texture;
+    std::vector<int> Zochem;
+    Zochem.push_back(building_list->Find_Building("FramePattern")->get_x_coordinate());
+    Zochem.push_back(building_list->Find_Building("FramePattern")->get_y_coordinate());
+    Pressed_Check(&Zochem);
 }

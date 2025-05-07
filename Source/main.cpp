@@ -11,7 +11,7 @@ float SPEED = 40; // Скорость перемещения по карте
 int FRAME_RATE = 60;
 std::map<std::string, float> CONSTANTS; // Словарь констант для использования в функциях
 std::string BUILDING_TEXTURE = ""; // Текстура создаваемой сущности
-int PLAYER_NUMBER = 1;
+// int PLAYER_NUMBER = 1;
 int MONEY = 1000;
 
 int main() {
@@ -54,9 +54,9 @@ int main() {
 
     // Настраиваем игровые объекты
     Texture_List texture_list(&Created_Map, "Standart");
-    Created_Map.get_Building_list()->Add_Building(0,0,"../Textures/FramePattern.png","../Textures/FramePattern.png");
-    Created_Map.get_Building_list()->Find_Building("../Textures/FramePattern.png")->set_Sprite_Origin(Created_Map.get_cell_width()/2.0f, Created_Map.get_cell_height()*1.0f);
-    Created_Map.get_Building_list()->Find_Building("../Textures/FramePattern.png")->set_Sprite_Color(255, 255, 255, 150);
+    Created_Map.get_Building_list()->Add_Building(0,0,"../Textures/FramePattern.png");
+    Created_Map.get_Building_list()->Find_Building("FramePattern")->set_Sprite_Origin(Created_Map.get_cell_width()/2.0f, Created_Map.get_cell_height()*1.0f);
+    Created_Map.get_Building_list()->Find_Building("FramePattern")->set_Sprite_Color(255, 255, 255, 150);
 
     // Приступаем к переопределению клеточек
     for (unsigned int i = 0; i < Created_Map.Get_Size(); i++) {
@@ -111,11 +111,18 @@ int main() {
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) && (Created_Map.get_scale()>0.2)) {
             Created_Map.Map_Scale(-1, "Keyboard", &CONSTANTS);
         }
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))) {
+            Created_Map.set_Player_Number();
+        }
 
         // Обработка выбора сущности
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
-            Created_Map.get_Available_buildings()->Check_Access(1, "../Textures/Barracks.png");
+            // Created_Map.get_Available_buildings()->Check_Access(1, "Barracks.png");
             Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0)) {
+            // Created_Map.get_Available_buildings()->Check_Access(1, "Barracks.png");
+            Created_Map.set_BUILDING_TEXTURE("../Textures/grass.png");
         }
 
         // Отрисовка
@@ -142,5 +149,6 @@ int main() {
 
         // std::cout<<MONEY<<'\n';
     }
+
     std::cout << "Yep!" << std::endl;
 }

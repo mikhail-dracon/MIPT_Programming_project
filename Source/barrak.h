@@ -4,7 +4,7 @@
 
 
 class barrak:public building{
-    bool whant_to_create;
+    bool want_to_create;
 public:
     barrak(int x, int y, std::string texture);
     ~barrak() override;

@@ -13,12 +13,12 @@ Miner::~Miner() {
 
 void Miner::Action(int i) {
     if (i==1) {
-        whant_to_move = true;
+        want_to_move = true;
     } else {
-        whant_to_move = false;
+        want_to_move = false;
     }
 }
 
 bool Miner::get_Action() const {
-    return whant_to_move;
+    return want_to_move;
 }

@@ -15,14 +15,14 @@ barrak::~barrak() {
 
 void barrak::Action(int i) {
     if (i==1) {
-        whant_to_create = true;
+        want_to_create = true;
     } else {
-        whant_to_create = false;
+        want_to_create = false;
     }
 }
 
 bool barrak::get_Action() const {
-    return whant_to_create;
+    return want_to_create;
 }
 
 

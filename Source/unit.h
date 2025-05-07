@@ -4,7 +4,7 @@
 
 
 class unit:public building {
-    int whant_to_move;
+    int want_to_move;
 public:
     unit(int x, int y, std::string texture);
     ~unit() override;

@@ -4,7 +4,7 @@
 
 
 class Miner:public building {
-    int whant_to_move;
+    int want_to_move;
 public:
     Miner(int x, int y, std::string texture);
     ~Miner() override;

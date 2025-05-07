@@ -13,12 +13,12 @@ unit::~unit() {
 
 void unit::Action(int i) {
     if (i==1) {
-        whant_to_move = true;
+        want_to_move = true;
     } else {
-        whant_to_move = false;
+        want_to_move = false;
     }
 }
 
 bool unit::get_Action() const {
-    return whant_to_move;
+    return want_to_move;
 }

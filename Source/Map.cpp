@@ -203,3 +203,7 @@ void Map::set_BUILDING_TEXTURE(std::string texture) {
     Zochem.push_back(building_list->Find_Building("FramePattern")->get_y_coordinate());
     Pressed_Check(&Zochem);
 }
+
+bool Map::Check_Access(std::string teg){
+    return Available_Buildings->Check_Access(PLAYER_NUMBER , teg);
+}

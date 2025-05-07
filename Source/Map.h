@@ -44,6 +44,7 @@ public:
     void Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y);
     void Map_Scale(int delta, std::string Scale_Type, std::map<std::string, float>* Constants);
     void set_Player_Number();
+    bool Check_Access(std::string teg);
 };
 
 #endif //MAP_H

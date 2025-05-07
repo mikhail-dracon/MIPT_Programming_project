@@ -9,7 +9,9 @@
 // Таким образом: мы добавили в словарь элемент "../grass.png", которому присвоили ключ 1
 // Это значит что игрок с номером 1 может создавать building с текстурой "../grass.png"
 Available_Buildings::Available_Buildings() {
-    Buildings.insert(std::pair<int, std::string>(1, "../Textures/Barracks.png"));
+    Buildings.insert(std::pair<int, std::string>(1, "Barracks"));
+    Buildings.insert(std::pair<int, std::string>(1, "grass"));
+    Buildings.insert(std::pair<int, std::string>(1, "Warrior"));
 }
 
 Available_Buildings::~Available_Buildings() {

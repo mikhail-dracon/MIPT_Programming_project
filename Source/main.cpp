@@ -117,12 +117,16 @@ int main() {
 
         // Обработка выбора сущности
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
-            // Created_Map.get_Available_buildings()->Check_Access(1, "Barracks.png");
-            Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
+            if (Created_Map.Check_Access("Barracks")){
+                Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
+            }
+            // Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0)) {
-            // Created_Map.get_Available_buildings()->Check_Access(1, "Barracks.png");
-            Created_Map.set_BUILDING_TEXTURE("../Textures/grass.png");
+            if (Created_Map.Check_Access("grass") || Created_Map.Check_Access("Warrior")){
+                Created_Map.set_BUILDING_TEXTURE("../Textures/grass.png");
+            }
+            // Created_Map.set_BUILDING_TEXTURE("../Textures/grass.png");
         }
 
         // Отрисовка

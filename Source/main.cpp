@@ -13,6 +13,20 @@ std::map<std::string, float> CONSTANTS; // Словарь констант дл�
 std::string BUILDING_TEXTURE = ""; // Текстура создаваемой сущности
 // int PLAYER_NUMBER = 1;
 int MONEY = 1000;
+void LoadUITextures() {
+    std::vector<std::string> paths = {
+            "../Textures/Warrior_right.png",
+            "../Textures/Barracks.png",
+            "../Textures/Mine.png",
+            "../Textures/Miner_right.png"
+    };
+    for (const auto& path : paths) {
+        sf::Texture tex;
+        if (tex.loadFromFile(path)) {
+            ui_textures.push_back(tex);
+        }
+    }
+}
 
 int main() {
     // Запуск окна
@@ -20,6 +34,12 @@ int main() {
     SCREEN_WIDTH = desktop.size.x;
     SCREEN_HEIGHT = desktop.size.y;
     sf::RenderWindow window(sf::VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), "Game");
+
+    //Загрузка шрифта
+    sf::Font font;
+    if (!font.loadFromFile("../Font/font.ttf")) {
+        std::cerr << "Font not found!" << std::endl;
+    }
 
     // Создание карты
     std::string texture_name = "../Textures/BasicLendPattern.png";
@@ -51,6 +71,43 @@ int main() {
     sf::FloatRect ScaledBounds = (Sky_Sprite).getGlobalBounds();
     float Sky_WIDTH = ScaledBounds.size.x;
     Sky_Sprite.setScale({SCREEN_WIDTH/Sky_WIDTH,SCREEN_WIDTH/Sky_WIDTH});
+
+    //Отрисовка иконок
+    LoadUITextures();
+
+    //Спрайты
+    sf::Sprite warrior(ui_textures[0]);
+    sf::Sprite barrack(ui_textures[1]);
+    sf::Sprite mine(ui_textures[2]);
+    sf::Sprite miner(ui_textures[3]);
+
+    // Позиционирование
+    barrack.setPosition((20.f/2048.f)*SCREEN_WIDTH, (100.f/1280.f)*SCREEN_HEIGHT);
+    mine.setPosition(20.f/2048.f*SCREEN_WIDTH, 300.f/1280.f*SCREEN_HEIGHT);
+    warrior.setPosition(1650.f/2048.f*SCREEN_WIDTH, 50.f/1280.f*SCREEN_HEIGHT);
+    miner.setPosition(1550.f/2048.f*SCREEN_WIDTH, 250.f/1280.f*SCREEN_HEIGHT);
+    warrior.setScale({1.5, 1.5});
+    miner.setScale({1.7, 1.7});
+
+    //Полупрозрачность
+    barrack.setColor(sf::Color(255, 255, 255, 128));
+    mine.setColor(sf::Color(255, 255, 255, 128));
+    warrior.setColor(sf::Color(255, 255, 255, 128));
+    miner.setColor(sf::Color(255, 255, 255, 128));
+
+    //Шрифты под иконками
+    sf::Text barrack_label("Press 1 to select", font, 20); // Надпись "Barrack", размер 20
+    barrack_label.setFillColor(sf::Color::White); // Цвет текста
+    barrack_label.setPosition(barrack.getPosition().x, barrack.getPosition().y + 150.f/1280.f*SCREEN_HEIGHT); // Под иконкой
+    sf::Text mine_label("Press 2 to select", font, 20); // Надпись "Barrack", размер 20
+    mine_label.setFillColor(sf::Color::White); // Цвет текста
+    mine_label.setPosition(mine.getPosition().x, mine.getPosition().y + 200.f/1280.f*SCREEN_HEIGHT); // Под иконкой
+    sf::Text warrior_label("Press 9 to select", font, 20); // Надпись "Barrack", размер 20
+    warrior_label.setFillColor(sf::Color::White); // Цвет текста
+    warrior_label.setPosition(warrior.getPosition().x + 50.f/2048.f*SCREEN_WIDTH, warrior.getPosition().y + 280.f/1280.f*SCREEN_HEIGHT); // Под иконкой
+    sf::Text miner_label("Press 8 to select", font, 20); // Надпись "Barrack", размер 20
+    miner_label.setFillColor(sf::Color::White); // Цвет текста
+    miner_label.setPosition(miner.getPosition().x + 148.f/2048.f*SCREEN_WIDTH, miner.getPosition().y + 280.f/1280.f*SCREEN_HEIGHT);
 
     // Настраиваем игровые объекты
     Texture_List texture_list(&Created_Map, "Standart");
@@ -141,6 +198,16 @@ int main() {
                 window.draw(*(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer()));
             }
         }
+        // Отрисовка иконок
+        window.draw(warrior);
+        window.draw(barrack);
+        window.draw(mine);
+        window.draw(miner);
+        window.draw(warrior_label);
+        window.draw(barrack_label);
+        window.draw(mine_label);
+        window.draw(miner_label);
+        
         // Отрисовка элементов из Building_List
         for (auto it = Created_Map.get_Building_list()->Buildings.begin(); it!= Created_Map.get_Building_list()->Buildings.end(); it++) {
             it->second->set_Sprite_Scale(Created_Map.get_scale());

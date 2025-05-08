@@ -4,7 +4,7 @@
 barrak::barrak(int x, int y, std::string texture) : building(x, y, texture) {
     health = 100;
     ability_unit = true;
-    whant_to_create = false;
+    want_to_create = false;
     std::cout<<"Barrak have been created"<<'\n';
 }
 

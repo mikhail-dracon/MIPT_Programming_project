@@ -28,6 +28,7 @@ public:
     void Hit(int x_coord, int y_coord);
     bool Move(int x_coord, int y_coord);
     bool Select_Building(int x_coord, int y_coord, std::string texture);
+    int Count_Buildings(std::string key);
 };
 
 

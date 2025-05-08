@@ -13,17 +13,14 @@ class UI_Textures {
     float SCREEN_WIDTH;
     float SCREEN_HEIGHT;
 
-    void createTitles(); // Добавляем приватный метод
+    void createTitles();
 
 public:
     UI_Textures();
     ~UI_Textures();
 
-    bool loadFont(const std::string& fontPath);
-
-    const std::vector<sf::Sprite>* get_ui_textures() const;
     std::vector<sf::Sprite>* get_ui_textures();
-    const std::vector<sf::Text>* get_ui_title() const;
+    std::vector<sf::Text>* get_ui_title();
 
     void set_screen_size(float width, float height);
     void set_position_textures();

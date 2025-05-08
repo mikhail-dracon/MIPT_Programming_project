@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Map.h"
 #include "Texture_List.h"
+#include "UI_Textures.h"
 
 // Константы
 unsigned int SCREEN_WIDTH = 0;
@@ -18,6 +19,13 @@ int main() {
     SCREEN_WIDTH = desktop.size.x;
     SCREEN_HEIGHT = desktop.size.y;
     sf::RenderWindow window(sf::VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), "Game");
+
+    // Загрузка шрифта
+    sf::Font font;
+    if (!font.openFromFile("../Font/font.ttf")) {
+        std::cerr << "Font not found!" << std::endl;
+    }
+    // Создание UI
 
     // Создание карты
     std::string texture_name = "../Textures/BasicLendPattern.png";
@@ -49,6 +57,12 @@ int main() {
     sf::FloatRect ScaledBounds = (Sky_Sprite).getGlobalBounds();
     float Sky_WIDTH = ScaledBounds.size.x;
     Sky_Sprite.setScale({SCREEN_WIDTH/Sky_WIDTH,SCREEN_WIDTH/Sky_WIDTH});
+
+    // UI Текстуры
+    UI_Textures uiTextures;
+    uiTextures.set_screen_size(SCREEN_WIDTH, SCREEN_HEIGHT);
+    std::vector<sf::Text>* titles = uiTextures.get_ui_title();
+    std::vector<sf::Sprite>* sprites = uiTextures.get_ui_textures();
 
     // Настраиваем игровые объекты
     Texture_List texture_list(&Created_Map, "Standart");
@@ -92,7 +106,8 @@ int main() {
                 }
             }
         }
-        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) && (Created_Map.get_zero_x())<SCREEN_HEIGHT/2.0f){
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) && (Created_Map.get_zero_x())<SCREEN_HEIGHT/1.0f+Created_Map.get_cell_height()) {
+            // std::cout<<Created_Map.get_zero_x()<<std::endl;
             Created_Map.set_zero_x(Created_Map.get_zero_x() + Created_Map.get_scale()*SPEED);
         }
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) && (Created_Map.get_zero_x()>Created_Map.get_scale()*Created_Map.get_cell_height()*0.577*(-1.0f)*Created_Map.Get_Size())){
@@ -145,7 +160,16 @@ int main() {
                 window.draw(*(Created_Map.Cells_Data[i][j]->get_Sprite_Pointer()));
             }
         }
-        
+
+        // Отрисовка UI
+
+        for (size_t i = 0; i < sprites->size(); ++i) {
+            window.draw((*sprites)[i]);
+        }
+        for (size_t i = 0; i < titles->size(); ++i) {
+            window.draw((*titles)[i]);
+        }
+
         // Отрисовка элементов из Building_List
         for (auto it = Created_Map.get_Building_list()->Buildings.begin(); it!= Created_Map.get_Building_list()->Buildings.end(); it++) {
             it->second->set_Sprite_Scale(Created_Map.get_scale());

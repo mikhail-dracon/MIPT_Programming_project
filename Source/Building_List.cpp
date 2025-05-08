@@ -21,6 +21,15 @@ Building_List::~Building_List() {
     Buildings.clear();
 }
 
+int Building_List::Count_Buildings(std::string key) {
+    int number = 0;
+    auto range = Buildings.equal_range(key);
+    for (auto it = range.first; it != range.second; it++) {
+        number++;
+    }
+    return number;
+}
+
 bool Building_List::Select_Building(int x, int y, std::string texture) {
     // for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
     //     if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y && it->first == "Barracks") {
@@ -28,7 +37,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
     //     }
     // } // сбрасываем активность всех казарм
 
-    if (texture == "../Textures/Miner.png") {
+    if (texture == "../Textures/Miner.png" && Count_Buildings("Miner")<1 ) {
         for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
                 if (it->second->get_Teg() == "Mine") {
@@ -136,11 +145,11 @@ bool Building_List::Destroy_Building(int x_coord, int y_coord, std::string key) 
 // (Метод Add опять постарался над однозначностью определения)
 building* Building_List::Find_Building(int x_coord, int y_coord, std::string key) {
     // Будем пробегаться только по постройкам одного владельца
-    std::cout<<"Try to Find: "<<key<<'\n';
+    // std::cout<<"Try to Find: "<<key<<'\n';
     auto range = Buildings.equal_range(key);
     for (auto it = range.first; it != range.second; it++) {
         if (it->second->get_x_coordinate() == x_coord && it->second->get_y_coordinate() == y_coord) {
-            std::cout<<"Success Find: "<<key<<'\n';
+            // std::cout<<"Success Find: "<<key<<'\n';
             return it->second;
         }
     }

@@ -24,14 +24,14 @@ Available_Buildings::~Available_Buildings() {
 // Нужно сообщить свой номер (ключ) и имя текстуры постройки, которую мы хотим создать
 bool Available_Buildings::Check_Access(int Player_Number, std::string building_name) {
     auto range = Buildings.equal_range(Player_Number);
-    if (building_name == "Miner") {
-        for (auto it = range.first; it != range.second; it++) {
-            if (it->second == building_name) {
-                Buildings.erase(it);
-                return true;
-            }
-        }
-    }
+    // if (building_name == "Miner") {
+    //     for (auto it = range.first; it != range.second; it++) {
+    //         if (it->second == building_name) {
+    //             Buildings.erase(it);
+    //             return true;
+    //         }
+    //     }
+    // }
     for (auto it = range.first; it != range.second; it++) {
         if (it->second == building_name) {
             return true;

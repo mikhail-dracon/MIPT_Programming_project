@@ -60,5 +60,12 @@ std::string Texture_List::creat_Random_Texture_Name(int x_coord, int y_coord) {
         number-=(Texture_Chances[i]*100.0f/sum);
         i++;
     }
-    return Texture_Names[i-1];
+    std::string texture_name = Texture_Names[i-1];
+    if (texture_name.length() > 0 && texture_name.length() < 100) {
+        // std::cout << texture_name << std::endl;
+        return texture_name;
+    }
+    return "ABOBA";
 }
+
+

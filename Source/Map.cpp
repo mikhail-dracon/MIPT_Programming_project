@@ -1,4 +1,5 @@
 #include "Map.h"
+#include <random>
 
 std::string extract_filename_M(const std::string& path) {
     size_t start = path.find_last_of("/\\") + 1;
@@ -7,8 +8,18 @@ std::string extract_filename_M(const std::string& path) {
     // std::cout<<path.substr(start, end - start)<<'\n';
     return path.substr(start, end - start);
 }
+int get_random_number_M(int from, int to) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(from, to);
+    return dist(gen);
+}
+
 
 Map::Map(unsigned int Map_Size, std::string Map_Texture) {
+    if (Map_Size<4) {
+        Map_Size = 4;
+    }
     // Создаем словарь доступных для разных игроков сущностей
     Available_Buildings *Available_buildings = new Available_Buildings();
     // Создаем вектор сущностей и добавляем в него рамку
@@ -22,6 +33,9 @@ Map::Map(unsigned int Map_Size, std::string Map_Texture) {
             Vector.push_back(New_Cell);
         }
         Cells_Data.push_back(Vector);
+    }
+    for (int i=0; i < 2; i++) {
+        MONEY.push_back(1000);
     }
     SCALE = 1;
     ZERO_X = 0;
@@ -136,7 +150,6 @@ void Map::Pressed_Check(std::vector<int>* v) {
         if (building_list->Add_Building(x, y, BUILDING_TEXTURE)) {
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_owner_id(PLAYER_NUMBER);
-            // BUILDING_TEXTURE = "";
         } /*else {
             building_list->Select_Building(x, y, BUILDING_TEXTURE);
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
@@ -146,7 +159,10 @@ void Map::Pressed_Check(std::vector<int>* v) {
         }*/
     } else {
         building_list->Hit(x,y);
-        building_list->Move(x,y);
+        if (Cells_Data[x][y]->get_Texture_Name() != "../Textures/MarsHoulLendPattern.png ") {
+            // std::cout<<Cells_Data[x][y]->get_Texture_Name()<<"eljjnejjnvlek"<<'\n';
+            building_list->Move(x,y);
+        }
     }
     BUILDING_TEXTURE = "";
 }
@@ -205,5 +221,25 @@ void Map::set_BUILDING_TEXTURE(std::string texture) {
 }
 
 bool Map::Check_Access(std::string teg){
-    return Available_Buildings->Check_Access(PLAYER_NUMBER , teg);
+    return available_buildings->Check_Access(PLAYER_NUMBER , teg);
+}
+
+bool Map::Create_Mines() {
+    int x =0;
+    int y =0;
+    int number = Size*Size/40;
+    for (int i = 0; i < number; i++) {
+        x = get_random_number_M(0, Size-2);
+        y = get_random_number_M(0, Size-2);
+        if (building_list->Add_Building(x,y,"../Textures/Mine.png")) {
+            if (Cells_Data[x][y]->get_Texture_Name() == "../Textures/MarsHoulLendPattern.png " || Cells_Data[x][y]->get_Texture_Name() == "../Textures/MarsMountainLendPattern.png ") {
+                if (building_list->Destroy_Building(x, y, "Mine")) {
+                    std::cout<<"DESTROY MINE"<<std::endl;
+                }
+            } else {
+                building_list->Find_Building(x, y, extract_filename_M("../Textures/Mine.png"))->set_Sprite_Origin(CELL_WIDTH / 1.7f, CELL_HEIGHT * 1.3f);
+            }
+        }
+    }
+    return true;
 }

@@ -12,6 +12,7 @@ class Cell {
     sf::Texture Texture;
     std::string Texture_Name;
 public:
+    // std::string Texture_Name;
     Cell(int x, int y, std::string texture);
     ~Cell();
     int get_x_coordinate() const;
@@ -23,6 +24,7 @@ public:
     void set_Sprite_Origin(float x, float y);
     void set_Sprite_Position(float x, float y);
     void set_Scale_Sprite(float scale);
+    void set_Texture_Name(std::string texture_name);
 };
 
 

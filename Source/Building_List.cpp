@@ -1,6 +1,7 @@
 #include "Building_List.h"
 #include "barrak.h"
 #include "unit.h"
+#include "Miner.h"
 
 std::string extract_filename(const std::string& path) {
     size_t start = path.find_last_of("/\\") + 1;
@@ -26,6 +27,37 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
     //         it->second->Action(-1);
     //     }
     // } // сбрасываем активность всех казарм
+
+    if (texture == "../Textures/Miner.png") {
+        for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
+            if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
+                if (it->second->get_Teg() == "Mine") {
+                    // it->second->Action(1);
+                    std::string key = extract_filename(texture);
+                    building* Building = new Miner(x, y, texture);
+                    Buildings.insert(std::pair<std::string, building*>(key, Building));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    if (texture == "../Textures/Barracks.png") {
+        for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
+            if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
+                if (it->second->get_Teg() == "Miner") {
+                    // it->second->Action(1);
+                    std::string key = extract_filename(texture);
+                    building* Building = new Miner(x, y, texture);
+                    Buildings.insert(std::pair<std::string, building*>(key, Building));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
         if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
             if (it->second->get_Teg() == "Barracks") {
@@ -55,14 +87,23 @@ bool Building_List::Add_Building(int x, int y, std::string texture) {
             return false;
         }
     }
+    if (texture == "../Textures/Barracks.png") {
+        auto range = Buildings.equal_range("Mine");
+        for (auto it = range.first; it != range.second; it++) {
+            if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
+                return false;
+            }
+        }
+    }
     // В случае, когда все хорошо, нам разрешают поставить здание
-    if (key == "FramePattern") {
+    if (key == "Mine") {
         building* Building = new building(x, y, texture);
         Buildings.insert(std::pair<std::string, building*>(key, Building));
         return true;
-    } else if (key == "Barracks") {
-        building* Building = new barrak(x, y, texture);
+    } else if (key == "FramePattern") {
+        building* Building = new building(x, y, texture);
         Buildings.insert(std::pair<std::string, building*>(key, Building));
+        std::cout<<"Frame coordinate: "<<x<<" "<<y<<'\n';
         return true;
     } else {
         return Select_Building(x, y, texture);
@@ -125,7 +166,7 @@ void Building_List::Check_Health(int x_coord, int y_coord, std::string key) {
 void Building_List::Hit(int x, int y) {
     for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
         if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
-            if (it->second->get_Teg() == "Warrior" || it->second->get_Teg() == "grass") {
+            if (it->second->get_Teg() == "Warrior" || it->second->get_Teg() == "Miner") {
                 it->second->set_health(-50);
                 Check_Health(x,y,it->first);
                 return;
@@ -167,9 +208,9 @@ bool Building_List::Move(int x, int y) {
         if (pair.second &&
             pair.second->get_x_coordinate() == x &&
             pair.second->get_y_coordinate() == y &&
-            (pair.second->get_Teg() == "Warrior" || pair.second->get_Teg() == "grass")) {
+            (pair.second->get_Teg() == "Warrior" || pair.second->get_Teg() == "Miner")) {
             for (auto& pair : Buildings) {
-                if ((pair.first == "Warrior" || pair.first == "grass") && pair.second) {
+                if ((pair.first == "Warrior" || pair.first == "Miner") && pair.second) {
                     pair.second->Action(-1);
                 }
             }
@@ -179,19 +220,19 @@ bool Building_List::Move(int x, int y) {
     }
     // 3. Если есть активный юнит - перемещаем его
     for (auto& pair : Buildings) {
-        if (pair.second &&
-            (pair.first == "Warrior" || pair.first == "grass") &&
-            pair.second->get_Action()) {
-            pair.second->set_x_coordinate(x);
-            pair.second->set_y_coordinate(y);
-            pair.second->Action(-1); // Деактивируем после перемещения
-            for (auto& pair : Buildings) {
-                if ((pair.first == "Warrior" || pair.first == "grass") && pair.second) {
-                    pair.second->Action(-1);
+        if (pair.second && (pair.first == "Warrior" || pair.first == "Miner") && pair.second->get_Action()) {
+            if (abs(x-pair.second->get_x_coordinate())<2 && abs(y-pair.second->get_y_coordinate())<2) {
+                pair.second->set_x_coordinate(x);
+                pair.second->set_y_coordinate(y);
+                pair.second->Action(-1); // Деактивируем после перемещения
+                for (auto& pair : Buildings) {
+                    if ((pair.first == "Warrior" || pair.first == "Miner") && pair.second) {
+                        pair.second->Action(-1);
+                    }
                 }
+                return true;
             }
-            return true;
-            }
+        }
     }
     return false;
 }

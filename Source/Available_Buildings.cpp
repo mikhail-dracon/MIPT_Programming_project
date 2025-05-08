@@ -10,8 +10,9 @@
 // Это значит что игрок с номером 1 может создавать building с текстурой "../grass.png"
 Available_Buildings::Available_Buildings() {
     Buildings.insert(std::pair<int, std::string>(1, "Barracks"));
-    Buildings.insert(std::pair<int, std::string>(1, "grass"));
+    // Buildings.insert(std::pair<int, std::string>(1, "grass"));
     Buildings.insert(std::pair<int, std::string>(1, "Warrior"));
+    Buildings.insert(std::pair<int, std::string>(1, "Miner"));
 }
 
 Available_Buildings::~Available_Buildings() {
@@ -23,6 +24,14 @@ Available_Buildings::~Available_Buildings() {
 // Нужно сообщить свой номер (ключ) и имя текстуры постройки, которую мы хотим создать
 bool Available_Buildings::Check_Access(int Player_Number, std::string building_name) {
     auto range = Buildings.equal_range(Player_Number);
+    if (building_name == "Miner") {
+        for (auto it = range.first; it != range.second; it++) {
+            if (it->second == building_name) {
+                Buildings.erase(it);
+                return true;
+            }
+        }
+    }
     for (auto it = range.first; it != range.second; it++) {
         if (it->second == building_name) {
             return true;

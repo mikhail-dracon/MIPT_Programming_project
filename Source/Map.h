@@ -17,6 +17,7 @@ class Map{
     Building_List* building_list;
     Available_Buildings* available_buildings;
     std::string BUILDING_TEXTURE; // Здание, которое мы хотим создать
+    std::vector<int> MONEY;
 
 public:
     std::vector<std::vector<Cell*>> Cells_Data;
@@ -45,6 +46,7 @@ public:
     void Map_Scale(int delta, std::string Scale_Type, std::map<std::string, float>* Constants);
     void set_Player_Number();
     bool Check_Access(std::string teg);
+    bool Create_Mines();
 };
 
 #endif //MAP_H

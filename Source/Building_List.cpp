@@ -45,6 +45,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
                     std::string key = extract_filename(texture);
                     building* Building = new Miner(x, y, texture);
                     Buildings.insert(std::pair<std::string, building*>(key, Building));
+                    Building->set_Sprite_Color(255,255,255,180);
                     return true;
                 }
             }
@@ -55,7 +56,8 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
     if (texture == "../Textures/Barracks.png") {
         for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
-                if (it->second->get_Teg() == "Miner") {
+                sf::Color color = {255, 255, 255};
+                if (it->second->get_Teg() == "Miner" && it->second->get_Color() == color) {
                     // it->second->Action(1);
                     std::string key = extract_filename(texture);
                     building* Building = new Miner(x, y, texture);
@@ -74,6 +76,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
                 std::string key = extract_filename(texture);
                 building* Building = new unit(x, y, texture);
                 Buildings.insert(std::pair<std::string, building*>(key, Building));
+                Building->set_Sprite_Color(255,255,255,180);
                 return true;
             }
         }
@@ -211,13 +214,10 @@ void Building_List::Hit(int x, int y) {
 //     } // сбрасываем активность всех воинов
 // }
 
-bool Building_List::Move(int x, int y) {
+bool Building_List::Move(int x, int y, int PLAYER_NUMBER) {
     // 2. Проверяем клик по юниту
     for (auto& pair : Buildings) {
-        if (pair.second &&
-            pair.second->get_x_coordinate() == x &&
-            pair.second->get_y_coordinate() == y &&
-            (pair.second->get_Teg() == "Warrior" || pair.second->get_Teg() == "Miner")) {
+        if (pair.second && pair.second->get_x_coordinate() == x && pair.second->get_y_coordinate() == y && (pair.second->get_Teg() == "Warrior" || pair.second->get_Teg() == "Miner") && pair.second->get_owner_id() == PLAYER_NUMBER) {
             for (auto& pair : Buildings) {
                 if ((pair.first == "Warrior" || pair.first == "Miner") && pair.second) {
                     pair.second->Action(-1);
@@ -229,11 +229,13 @@ bool Building_List::Move(int x, int y) {
     }
     // 3. Если есть активный юнит - перемещаем его
     for (auto& pair : Buildings) {
-        if (pair.second && (pair.first == "Warrior" || pair.first == "Miner") && pair.second->get_Action()) {
+        sf::Color color = {255, 255, 255};
+        if (pair.second && (pair.first == "Warrior" || pair.first == "Miner") && pair.second->get_Action() && pair.second->get_Color() == color) {
             if (abs(x-pair.second->get_x_coordinate())<2 && abs(y-pair.second->get_y_coordinate())<2) {
                 pair.second->set_x_coordinate(x);
                 pair.second->set_y_coordinate(y);
                 pair.second->Action(-1); // Деактивируем после перемещения
+                pair.second->set_Sprite_Color(255,255,255,180);
                 for (auto& pair : Buildings) {
                     if ((pair.first == "Warrior" || pair.first == "Miner") && pair.second) {
                         pair.second->Action(-1);
@@ -261,4 +263,16 @@ int Building_List::Stonks(int PLAYER_NUMBER) {
     }
     // На нет и суда нет, ЙОУ!
     return k;
+}
+
+void Building_List::Set_Global_Color() {
+    for (auto& pair : Buildings) {
+        pair.second->set_Sprite_Color(255,255,255,255);
+    }
+}
+
+void Building_List::Global_Diactivate() {
+    for (auto& pair : Buildings) {
+        pair.second->Action(-1);
+    }
 }

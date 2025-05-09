@@ -26,10 +26,12 @@ public:
     building* Find_Building(std::string key);
     void Check_Health(int x_coord, int y_coord, std::string key);
     void Hit(int x_coord, int y_coord);
-    bool Move(int x_coord, int y_coord);
+    bool Move(int x_coord, int y_coord, int PLAYER_NUMBER);
     bool Select_Building(int x_coord, int y_coord, std::string texture);
     int Count_Buildings(std::string key);
     int Stonks(int PLAYER_NUMBER);
+    void Set_Global_Color();
+    void Global_Diactivate();
 };
 
 

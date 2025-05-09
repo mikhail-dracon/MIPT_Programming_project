@@ -140,13 +140,13 @@ int main() {
                 // std::cout<<Created_Map.get_Money()<<std::endl;
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
             if (Created_Map.Check_Access("Warrior") && Created_Map.get_Money()>=200){
                 Created_Map.set_Cost(200);
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num9)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) {
             if (Created_Map.Check_Access("Miner") && Created_Map.get_Money()>=500){
                 Created_Map.set_Cost(500);
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
@@ -166,15 +166,6 @@ int main() {
             }
         }
 
-        // Отрисовка UI
-
-        for (size_t i = 0; i < sprites->size(); ++i) {
-            window.draw((*sprites)[i]);
-        }
-        for (size_t i = 0; i < titles->size(); ++i) {
-            window.draw((*titles)[i]);
-        }
-
         // Отрисовка элементов из Building_List
         for (auto it = Created_Map.get_Building_list()->Buildings.begin(); it!= Created_Map.get_Building_list()->Buildings.end(); it++) {
             it->second->set_Sprite_Scale(Created_Map.get_scale());
@@ -182,8 +173,17 @@ int main() {
             window.draw(*(it->second->get_Sprite_Pointer()));
         }
 
+        // Отрисовка UI
+        for (size_t i = 0; i < titles->size(); ++i) {
+            window.draw((*titles)[i]);
+        }
+        for (size_t i = 0; i < sprites->size(); ++i) {
+            window.draw((*sprites)[i]);
+        }
+
         window.display();
         sf::sleep(sf::milliseconds(1000/FRAME_RATE));
+
 
         // std::cout<<MONEY<<'\n';
     }

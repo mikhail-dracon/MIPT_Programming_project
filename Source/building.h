@@ -41,6 +41,7 @@ public:
     std::string get_Teg() const;
     virtual void Action(int i); // флаг в каком направлении делать действие
     virtual bool get_Action() const;
+    sf::Color get_Color();
 
 };
 

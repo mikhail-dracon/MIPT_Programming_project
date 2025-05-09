@@ -109,3 +109,7 @@ void building::Action(int i) {
 bool building::get_Action() const {
     return false;
 }
+
+sf::Color  building::get_Color() {
+    return Sprite->getColor();
+}

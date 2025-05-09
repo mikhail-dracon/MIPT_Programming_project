@@ -124,6 +124,8 @@ void Map::set_Player_Number() {
     if (PLAYER_NUMBER>2) {
         PLAYER_NUMBER = 1;
     }
+    building_list->Set_Global_Color();
+    building_list->Global_Diactivate();
 }
 
 
@@ -163,7 +165,7 @@ void Map::Pressed_Check(std::vector<int>* v) {
         // building_list->Hit(x,y);
         if (Cells_Data[x][y]->get_Texture_Name() != "../Textures/MarsHoulLendPattern.png ") {
             // std::cout<<Cells_Data[x][y]->get_Texture_Name()<<"eljjnejjnvlek"<<'\n';
-            building_list->Move(x,y);
+            building_list->Move(x,y, PLAYER_NUMBER);
         }
     }
     BUILDING_TEXTURE = "";
@@ -252,6 +254,7 @@ int Map::get_Money() {
 
 void Map::set_Cost(int money) {
     BUILDING_COST = money;
+
 }
 
 void Map::Stonks() {

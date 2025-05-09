@@ -17,6 +17,7 @@ class Map{
     Building_List* building_list;
     Available_Buildings* available_buildings;
     std::string BUILDING_TEXTURE; // Здание, которое мы хотим создать
+    int BUILDING_COST;
     std::vector<int> MONEY;
 
 public:
@@ -47,6 +48,9 @@ public:
     void set_Player_Number();
     bool Check_Access(std::string teg);
     bool Create_Mines();
+    int get_Money();
+    void set_Cost(int money);
+    void Stonks();
 };
 
 #endif //MAP_H

@@ -34,9 +34,7 @@ Map::Map(unsigned int Map_Size, std::string Map_Texture) {
         }
         Cells_Data.push_back(Vector);
     }
-    for (int i=0; i < 2; i++) {
-        MONEY.push_back(1000);
-    }
+    MONEY = {1500, 1500};
     SCALE = 1;
     ZERO_X = 0;
     ZERO_Y = 0;
@@ -122,7 +120,7 @@ Available_Buildings *Map::get_Available_buildings() {
 }
 
 void Map::set_Player_Number() {
-    PLAYER_NUMBER ++;
+    PLAYER_NUMBER +=1;
     if (PLAYER_NUMBER>2) {
         PLAYER_NUMBER = 1;
     }
@@ -150,6 +148,10 @@ void Map::Pressed_Check(std::vector<int>* v) {
         if (building_list->Add_Building(x, y, BUILDING_TEXTURE)) {
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_owner_id(PLAYER_NUMBER);
+            MONEY[PLAYER_NUMBER-1]-=BUILDING_COST;
+            std::cout << "Player Number: "<<PLAYER_NUMBER<<std::endl;
+            std::cout << "Money: "<< MONEY[PLAYER_NUMBER-1] << std::endl;
+            std::cout << std::endl;
         } /*else {
             building_list->Select_Building(x, y, BUILDING_TEXTURE);
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
@@ -158,7 +160,7 @@ void Map::Pressed_Check(std::vector<int>* v) {
             //функция для создания юнитов и других подвижных сущностей// Доделать определение ключа текстуры
         }*/
     } else {
-        building_list->Hit(x,y);
+        // building_list->Hit(x,y);
         if (Cells_Data[x][y]->get_Texture_Name() != "../Textures/MarsHoulLendPattern.png ") {
             // std::cout<<Cells_Data[x][y]->get_Texture_Name()<<"eljjnejjnvlek"<<'\n';
             building_list->Move(x,y);
@@ -242,4 +244,17 @@ bool Map::Create_Mines() {
         }
     }
     return true;
+}
+
+int Map::get_Money() {
+    return MONEY[PLAYER_NUMBER-1];
+}
+
+void Map::set_Cost(int money) {
+    BUILDING_COST = money;
+}
+
+void Map::Stonks() {
+    MONEY[PLAYER_NUMBER-1] += building_list->Stonks(PLAYER_NUMBER) * 100;
+    std::cout<<"PLayer: "<<PLAYER_NUMBER<<" Stonks: "<< MONEY[PLAYER_NUMBER-1]<<std::endl;
 }

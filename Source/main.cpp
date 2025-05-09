@@ -127,23 +127,28 @@ int main() {
             Created_Map.Map_Scale(-1, "Keyboard", &CONSTANTS);
         }
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))) {
+            Created_Map.Stonks();
             Created_Map.set_Player_Number();
             sf::sleep(sf::milliseconds(10*1000/FRAME_RATE));
         }
 
         // Обработка выбора сущности
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
-            if (Created_Map.Check_Access("Barracks")){
+            if (Created_Map.Check_Access("Barracks") && Created_Map.get_Money()>=500){
+                Created_Map.set_Cost(500);
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
+                // std::cout<<Created_Map.get_Money()<<std::endl;
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0)) {
-            if (Created_Map.Check_Access("Warrior")){
+            if (Created_Map.Check_Access("Warrior") && Created_Map.get_Money()>=200){
+                Created_Map.set_Cost(200);
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num9)) {
-            if (Created_Map.Check_Access("Miner")){
+            if (Created_Map.Check_Access("Miner") && Created_Map.get_Money()>=500){
+                Created_Map.set_Cost(500);
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
             }
         }

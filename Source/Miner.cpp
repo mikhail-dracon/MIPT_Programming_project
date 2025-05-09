@@ -3,7 +3,7 @@
 
 Miner::Miner(int x, int y, std::string texture) : building(x, y, texture) {
     // Teg = teg;
-    health = 1000;
+    health = 200;
     std::cout<<"Unit have been created"<<'\n';
 }
 

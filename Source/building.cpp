@@ -95,6 +95,9 @@ int building::get_health() const {
 void building::set_owner_id(int Owner_id){
     owner_id = Owner_id;
 }
+int building::get_owner_id() const{
+    return owner_id;
+}
 std::string building::get_Teg() const {
     return Teg;
 }

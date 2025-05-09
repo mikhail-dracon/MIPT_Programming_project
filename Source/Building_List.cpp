@@ -246,3 +246,19 @@ bool Building_List::Move(int x, int y) {
     }
     return false;
 }
+
+int Building_List::Stonks(int PLAYER_NUMBER) {
+    int k = 0;
+    auto range = Buildings.equal_range("Miner");
+    for (auto it = range.first; it != range.second; it++) {
+        if (it->second->get_Teg() == "Miner" && it->second->get_owner_id() == PLAYER_NUMBER) {
+            int x = it->second->get_x_coordinate();
+            int y = it->second->get_y_coordinate();
+            if (Find_Building(x, y, "Mine")) {
+                k++;
+            }
+        }
+    }
+    // На нет и суда нет, ЙОУ!
+    return k;
+}

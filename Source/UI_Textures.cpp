@@ -7,10 +7,10 @@ void UI_Textures::createTitles() {
         ui_title.clear();
 
         const std::vector<std::string> labels = {
-            "Press 1 to select",
+            "Press 1 to select (500)",
             "Press 2 to select",
-            "Press 0 to select",
-            "Press 9 to select"
+            "Press 0 to select (200)",
+            "Press 9 to select (500)"
         };
 
         for (const auto& label : labels) {

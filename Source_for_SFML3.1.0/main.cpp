@@ -13,7 +13,6 @@ int FRAME_RATE = 60;
 std::map<std::string, float> CONSTANTS; // Словарь констант для использования в функциях
 std::string BUILDING_TEXTURE = ""; // Текстура создаваемой сущности
 static int turnNumber = 1;     // Счетчик ходов
-static int playersMoved = 0;   // Количество игроков, сделавших ход
 
 int main() {
     // Запуск окна
@@ -27,7 +26,6 @@ int main() {
     if (!font.loadFromFile("../Font/font.ttf")) {
         std::cerr << "Font not found!" << std::endl;
     }
-    // Создание UI
 
     // Создание карты
     std::string texture_name = "../Textures/BasicLendPattern.png";
@@ -135,10 +133,9 @@ int main() {
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))) {
             Created_Map.Stonks();
             Created_Map.set_Player_Number();
-            playersMoved++;
-            if (playersMoved >= 2) {
+            int playersMoved = Created_Map.get_Current_Player();
+            if (playersMoved == 1) {
                 turnNumber++;
-                playersMoved = 0;
             }
             sf::sleep(sf::milliseconds(10*1000/FRAME_RATE));
         }
@@ -165,10 +162,7 @@ int main() {
         }
 
         //Обновление UI
-        int currentMoney = Created_Map.get_Money();
-        int currentPlayer = Created_Map.get_Current_Player();
-
-        uiTextures.updateInfoPanel(currentMoney, currentPlayer, turnNumber);
+        uiTextures.updateInfoPanel(Created_Map.get_Money(), Created_Map.get_Current_Player(), turnNumber);
 
         // Отрисовка
         window.clear(sf::Color::Black);
@@ -191,6 +185,7 @@ int main() {
         }
 
         // Отрисовка UI
+        window.draw(uiTextures.get_tex_box());
         for (size_t i = 0; i < titles->size(); ++i) {
             window.draw((*titles)[i]);
         }

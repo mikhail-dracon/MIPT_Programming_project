@@ -12,6 +12,7 @@ class UI_Textures {
     std::vector<sf::Text> ui_title;
     std::vector<sf::Text> infoTexts;
     sf::RectangleShape infoBox;
+    sf::RectangleShape texBox;
     float SCREEN_WIDTH;
     float SCREEN_HEIGHT;
 
@@ -25,6 +26,7 @@ public:
     std::vector<sf::Text>* get_ui_title();
     std::vector<sf::Text>& get_info_texts();
     sf::RectangleShape& get_info_box();
+    sf::RectangleShape& get_tex_box();
 
     void set_screen_size(float width, float height);
     void set_position_textures();

@@ -1,0 +1,2 @@
+CMakeLists.txt not found in \\wsl.localhost\Ubuntu\home\ser\MIPT_Programming_project\Source Select CMakeLists.txt
+Toolchains are not configured Configure Disable profile

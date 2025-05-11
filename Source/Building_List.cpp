@@ -41,7 +41,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
     //     }
     // } // сбрасываем активность всех казарм
 
-    if (texture == "../Textures/Miner.png" && Count_Buildings("Miner")<1) {
+    if ((texture == "../Textures/Miner.png" && Count_Buildings("Miner")<1) || (texture == "../Textures/2/Miner.png" && Count_Buildings("Miner")<1)){
         for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
                 if (it->second->get_Teg() == "Mine") {
@@ -57,7 +57,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
         return false;
     }
 
-    if (texture == "../Textures/Barracks.png") {
+    if (texture == "../Textures/Barracks.png" || texture == "../Textures/2/Barracks.png") {
         for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
                 sf::Color color = {255, 255, 255};
@@ -105,7 +105,7 @@ bool Building_List::Add_Building(int x, int y, std::string texture) {
             return false;
         }
     }
-    if (texture == "../Textures/Barracks.png") {
+    if (texture == "../Textures/Barracks.png" || texture == "../Textures/2/Barracks.png") {
         auto range = Buildings.equal_range("Mine");
         for (auto it = range.first; it != range.second; it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {

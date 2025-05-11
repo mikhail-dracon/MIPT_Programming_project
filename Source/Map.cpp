@@ -8,6 +8,7 @@ std::string extract_filename_M(const std::string& path) {
     // std::cout<<path.substr(start, end - start)<<'\n';
     return path.substr(start, end - start);
 }
+
 int get_random_number_M(int from, int to) {
     static std::random_device rd;
     static std::mt19937 gen(rd());

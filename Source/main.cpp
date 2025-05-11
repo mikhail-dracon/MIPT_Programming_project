@@ -190,12 +190,14 @@ int main() {
         }
         //Обновление UI
         uiTextures.updateInfoPanel(Created_Map.get_Money(), Created_Map.get_Current_Player(), turnNumber);
+        Created_Map.updateHealthDisplays();
 
         window.draw(uiTextures.get_info_box()); // Фон
         for (const auto& text : uiTextures.get_info_texts()) { // Используем ссылку
             window.draw(text);
         }
 
+        Created_Map.drawHealthDisplays(window);
         window.display();
         sf::sleep(sf::milliseconds(1000/FRAME_RATE));
 

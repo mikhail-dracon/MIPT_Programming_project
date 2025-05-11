@@ -315,3 +315,7 @@ building* Building_List::get_Sprite_Active_Unit() {
 void Building_List::set_PLAYER_NUMBER(int pLAYER_NUMBER) {
     PLAYER_NUMBER = pLAYER_NUMBER;
 }
+
+// void Building_List::set_healthDisplays(std::vector<Health*>* health) {
+//     healthDisplays = *health;
+// }

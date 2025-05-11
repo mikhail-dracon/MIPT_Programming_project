@@ -59,6 +59,7 @@ Map::~Map() {
     delete building_list;
     // available_buildings->~Available_Buildings();
     delete available_buildings;
+    healthDisplays.clear();
 }
 
 unsigned int Map::Get_Size() const {
@@ -164,6 +165,11 @@ void Map::Pressed_Check(std::vector<int>* v) {
             std::cout << "Player Number: "<<PLAYER_NUMBER<<std::endl;
             std::cout << "Money: "<< MONEY[PLAYER_NUMBER-1] << std::endl;
             std::cout << std::endl;
+            if (building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))) { // Проверка на nullptr
+                Health* healthDisplay = new Health(building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE)));
+                healthDisplays.push_back(healthDisplay);
+            }
+
         } /*else {
             building_list->Select_Building(x, y, BUILDING_TEXTURE);
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);
@@ -286,5 +292,20 @@ void Map::Animation() {
         building* Unit = building_list->get_Sprite_Active_Unit();
         Set_Sprite_Static_Position(Unit->get_Sprite_Pointer(), Unit->get_x_coordinate(), Unit->get_y_coordinate(), Sprite_Flactuation[0]);
         // std::cout<<"ANIMATION"<<std::endl;
+    }
+}
+
+void Map::updateHealthDisplays() {
+    for (auto& health : healthDisplays) {
+        health->update(SCALE);
+    }
+    // building_list->set_healthDisplays(&healthDisplays);
+}
+
+void Map::drawHealthDisplays(sf::RenderWindow& window) {
+    for (auto& health : healthDisplays) {
+        if (health) {
+            health->draw(window);
+        }
     }
 }

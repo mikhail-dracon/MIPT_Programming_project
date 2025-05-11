@@ -5,6 +5,7 @@
 #include "Cell.h"
 #include "Building_List.h"
 #include "Available_Buildings.h"
+#include "Health.h"
 
 class Map{
     unsigned int Size;
@@ -20,6 +21,7 @@ class Map{
     int BUILDING_COST;
     std::vector<int> MONEY;
     float Sprite_Flactuation[2];
+    std::vector<Health*> healthDisplays;
 
 public:
     std::vector<std::vector<Cell*>> Cells_Data;
@@ -55,6 +57,8 @@ public:
     void Stonks();
     int get_Current_Player();
     void Animation();
+    void updateHealthDisplays(); // Обновить все Health
+    void drawHealthDisplays(sf::RenderWindow& window); // Отрисовать все Health
 };
 
 #endif //MAP_H

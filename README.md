@@ -17,6 +17,8 @@
 3. Исполнить команды:
    ```bash
    g++ *.cpp -o sfml_app -lsfml-graphics -lsfml-window -lsfml-system
+   ```
+   ```bash
    ./sfml_app
 </td> </tr> </table> ```
 

@@ -4,17 +4,21 @@
 ### Цель проекта:
 Создать пошаговую стратегию.
 
+#### Инструкция сборки:
+
 <table>
 <tr>
-<td style="color: gray; border: none;">
-#### <span style="color:#808080">*Инструкция сборки:
-##### <span style="color:#808080">На машине с установленной библиотекой SFML 3.0.0 (3.1.0)
-#####   &nbsp;&nbsp;&nbsp;&nbsp;1. Скопировать репозиторий;
-#####   &nbsp;&nbsp;&nbsp;&nbsp;2. Перейти в папку Source (или Source_for_SFML3.1.0);
-#####   &nbsp;&nbsp;&nbsp;&nbsp;3. Исполнить команды:
-#####       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g++ *.cpp -o sfml_app -lsfml-graphics -lsfml-window -lsfml-system
-#####       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./sfml_app
-</td> </tr> </table>
+<td style="border: none;">
+
+На машине с установленной библиотекой SFML 3.0.0 (3.1.0):
+
+1. Скопировать репозиторий
+2. Перейти в папку `Source` (или `Source_for_SFML3.1.0`)
+3. Исполнить команды:
+   ```bash
+   g++ *.cpp -o sfml_app -lsfml-graphics -lsfml-window -lsfml-system
+   ./sfml_app
+</td> </tr> </table> ```
 
 ### Этапы разработки:
 Этап 1: Отрисовка карты.

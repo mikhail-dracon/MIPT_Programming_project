@@ -4,15 +4,13 @@
 ### Цель проекта:
 Создать пошаговую стратегию.
 
-<!-- <span style="color:gray"> -->
-#### <span style="color:gray">*Инструкция сборки:</span>
-##### <span style="color:gray">На машине с установленной библиотекой SFML 3.0.0 (3.1.0)</span>
-#####   <span style="color:gray">1. Скопировать репозиторий;</span>
-#####   <span style="color:gray">2. Перейти в папку Source (или Source_for_SFML3.1.0);</span>
-#####   <span style="color:gray">3. Исполнить команды:</span>
-#####       <span style="color:gray">g++ *.cpp -o sfml_app -lsfml-graphics -lsfml-window -lsfml-system</span>
-#####       <span style="color:gray">./sfml_app .</span>
-<!-- </span> -->
+#### <span style="color:#808080">*Инструкция сборки:</span>
+##### <span style="color:#808080">На машине с установленной библиотекой SFML 3.0.0 (3.1.0)</span>
+#####   &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080">1. Скопировать репозиторий;</span>
+#####   &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080">2. Перейти в папку Source (или Source_for_SFML3.1.0);</span>
+#####   &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080">3. Исполнить команды:</span>
+#####       &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080">g++ *.cpp -o sfml_app -lsfml-graphics -lsfml-window -lsfml-system</span>
+#####       &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080">./sfml_app .</span>
 
 ### Этапы разработки:
 Этап 1: Отрисовка карты.

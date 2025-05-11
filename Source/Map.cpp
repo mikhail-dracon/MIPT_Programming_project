@@ -44,6 +44,8 @@ Map::Map(unsigned int Map_Size, std::string Map_Texture) {
     building_list = Building_list;
     available_buildings = Available_buildings;
     BUILDING_TEXTURE = "";
+    Sprite_Flactuation[0] = 0; //величина смещения
+    Sprite_Flactuation[1] = -1; //показывает направление роста координаты
 }
 
 Map::~Map() {
@@ -126,6 +128,7 @@ void Map::set_Player_Number() {
     }
     building_list->Set_Global_Color();
     building_list->Global_Diactivate();
+    building_list->set_PLAYER_NUMBER(PLAYER_NUMBER);
 }
 
 
@@ -135,6 +138,13 @@ void Map::Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y) {
     float vector_y[2] = {0.5,0.866};
     float k = 1/2.0f/0.88; // рассчет расстояния между клетками. Угол наклона = 30 градусов. На ширину спрайта домножаем ниже
     (*Sprite).setPosition({ZERO_Y+CELL_WIDTH*(x*vector_x[1]*k + y*vector_y[1]*k)*SCALE, ZERO_X+CELL_HEIGHT*(x*vector_x[0]*k + y*vector_y[0]*k)*SCALE});
+}
+
+void Map::Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y, float flactuation) {
+    float vector_x[2] = {0.5,-0.866};
+    float vector_y[2] = {0.5,0.866};
+    float k = 1/2.0f/0.88; // рассчет расстояния между клетками. Угол наклона = 30 градусов. На ширину спрайта домножаем ниже
+    (*Sprite).setPosition({ZERO_Y+CELL_WIDTH*(x*vector_x[1]*k + y*vector_y[1]*k)*SCALE, ZERO_X+CELL_HEIGHT*(x*vector_x[0]*k + y*vector_y[0]*k)*SCALE + flactuation});
 }
 
 void Map::Pressed_Check(std::vector<int>* v) {
@@ -166,6 +176,8 @@ void Map::Pressed_Check(std::vector<int>* v) {
         if (Cells_Data[x][y]->get_Texture_Name() != "../Textures/MarsHoulLendPattern.png ") {
             // std::cout<<Cells_Data[x][y]->get_Texture_Name()<<"eljjnejjnvlek"<<'\n';
             building_list->Move(x,y, PLAYER_NUMBER);
+        } else {
+            building_list->Global_Diactivate();
         }
     }
     BUILDING_TEXTURE = "";
@@ -263,4 +275,16 @@ void Map::set_Cost(int money) {
 void Map::Stonks() {
     MONEY[PLAYER_NUMBER-1] += building_list->Stonks(PLAYER_NUMBER) * 100;
     std::cout<<"PLayer: "<<PLAYER_NUMBER<<" Stonks: "<< MONEY[PLAYER_NUMBER-1]<<std::endl;
+}
+void Map::Animation() {
+    float max_flactuation = 10.0;
+    if (abs(Sprite_Flactuation[0]) > max_flactuation) {
+        Sprite_Flactuation[1] = - Sprite_Flactuation[1];
+    }
+    Sprite_Flactuation[0] += Sprite_Flactuation[1]*(max_flactuation/20.0f/3.5f);
+    if (building_list->get_Sprite_Active_Unit()) {
+        building* Unit = building_list->get_Sprite_Active_Unit();
+        Set_Sprite_Static_Position(Unit->get_Sprite_Pointer(), Unit->get_x_coordinate(), Unit->get_y_coordinate(), Sprite_Flactuation[0]);
+        // std::cout<<"ANIMATION"<<std::endl;
+    }
 }

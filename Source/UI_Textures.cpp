@@ -8,9 +8,9 @@ void UI_Textures::createTitles() {
 
         const std::vector<std::string> labels = {
             "Mine: You can't build it",
-            "Barrks: Press 1 to select (500)",
-            "Warrior: Press 2 to select (200)",
-            "Miner: Press 3 to select (500)"
+            "Barrks: Press 1 to select\nCost: 500",
+            "Warrior: Press 2 to select\nCost: 200\nDamage: 50",
+            "Miner: Press 3 to select\nCost: 500\nDamage: 10"
         };
 
         for (const auto& label : labels) {
@@ -50,6 +50,9 @@ UI_Textures::UI_Textures() : SCREEN_WIDTH(2048.f), SCREEN_HEIGHT(1280.f) {
     }
     std::cout<<"UI_TEXTURES CREATED"<<std::endl;
     // createTitles();
+    texBox.setFillColor(sf::Color(50, 50, 50, 200));
+    texBox.setOutlineThickness(2);
+    texBox.setOutlineColor(sf::Color::White);
 }
 
 // bool UI_Textures::loadFont(const std::string& fontPath) {
@@ -88,11 +91,14 @@ void UI_Textures::set_position_textures() {
     // ui_textures[2].setPosition({1650.f/2048.f * SCREEN_WIDTH, 0.f/1280.f * SCREEN_HEIGHT});
     // ui_textures[3].setPosition({1550.f/2048.f * SCREEN_WIDTH, 200.f/1280.f * SCREEN_HEIGHT});
     ui_textures[0].setPosition({20.f/2048.f * SCREEN_WIDTH, 20.f/1280.f * SCREEN_HEIGHT});
-    ui_textures[1].setPosition({20.f/2048.f * SCREEN_WIDTH, 330.f/1280.f * SCREEN_HEIGHT});
-    ui_textures[2].setPosition({-100.f/2048.f * SCREEN_WIDTH, 500.f/1280.f * SCREEN_HEIGHT});
-    ui_textures[3].setPosition({-200.f/2048.f * SCREEN_WIDTH, 700.f/1280.f * SCREEN_HEIGHT});
+    ui_textures[1].setPosition({20.f/2048.f * SCREEN_WIDTH, 340.f/1280.f * SCREEN_HEIGHT});
+    ui_textures[2].setPosition({-100.f/2048.f * SCREEN_WIDTH, 560.f/1280.f * SCREEN_HEIGHT});
+    ui_textures[3].setPosition({-200.f/2048.f * SCREEN_WIDTH, 815.f/1280.f * SCREEN_HEIGHT});
     ui_textures[2].setScale({1.5f, 1.5f});
     ui_textures[3].setScale({1.7f, 1.7f});
+    texBox.setSize(sf::Vector2f(390.f/2048.f * SCREEN_WIDTH, SCREEN_HEIGHT));
+    texBox.setPosition({0, 0});
+
 }
 
 void UI_Textures::set_color_title() {
@@ -114,7 +120,7 @@ void UI_Textures::set_screen_size(float width, float height) {
     SCREEN_WIDTH = width;
     SCREEN_HEIGHT = height;
     set_position_textures();
-    set_transparency(128);
+    set_transparency(255);
     set_position_title();
     set_color_title();
 }
@@ -135,7 +141,7 @@ void UI_Textures::createInfoPanel() {
     infoTexts[1].setString("Player: 1");
     infoTexts[2].setString("Turn: 1");
     // Инициализация прямоугольника
-    infoBox.setFillColor(sf::Color(100, 100, 100, 180));
+    infoBox.setFillColor(sf::Color(50, 50, 50, 200));
     infoBox.setOutlineThickness(2);
     infoBox.setOutlineColor(sf::Color::White);
 }
@@ -152,7 +158,7 @@ void UI_Textures::updateInfoPanel(int money, int currentPlayer, int turnNumber) 
     infoTexts[2].setString("Turn: " + std::to_string(turnNumber));
     // Позиционирование
     const float padding = 20.0f;
-    float yPos = padding;
+    float yPos = 10.0f;
     float maxWidth = 0;
     for(auto& text : infoTexts) {
         const float textWidth = text.getLocalBounds().size.x;
@@ -162,7 +168,7 @@ void UI_Textures::updateInfoPanel(int money, int currentPlayer, int turnNumber) 
     }
     // Обновляем инфо-бокс
     infoBox.setSize(sf::Vector2f(maxWidth + 2 * padding, 130));
-    infoBox.setPosition({SCREEN_WIDTH - maxWidth - 1.5f * padding, padding / 2.0f});
+    infoBox.setPosition({SCREEN_WIDTH - maxWidth - 1.5f * padding, padding * 0.0f});
 }
 
 
@@ -172,4 +178,7 @@ std::vector<sf::Text>& UI_Textures::get_info_texts() {
 
 sf::RectangleShape& UI_Textures::get_info_box() {
     return infoBox;
+}
+sf::RectangleShape& UI_Textures::get_tex_box() {
+    return texBox;
 }

@@ -19,6 +19,7 @@ class Map{
     std::string BUILDING_TEXTURE; // Здание, которое мы хотим создать
     int BUILDING_COST;
     std::vector<int> MONEY;
+    float Sprite_Flactuation[2];
 
 public:
     std::vector<std::vector<Cell*>> Cells_Data;
@@ -44,6 +45,7 @@ public:
     Building_List* get_Building_list();
     Available_Buildings* get_Available_buildings();
     void Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y);
+    void Set_Sprite_Static_Position(sf::Sprite* Sprite, int x, int y, float flactuation);
     void Map_Scale(int delta, std::string Scale_Type, std::map<std::string, float>* Constants);
     void set_Player_Number();
     bool Check_Access(std::string teg);
@@ -52,6 +54,7 @@ public:
     void set_Cost(int money);
     void Stonks();
     int get_Current_Player();
+    void Animation();
 };
 
 #endif //MAP_H

@@ -158,10 +158,6 @@ int main() {
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
             }
         }
-        //Обновление UI
-        // int currentMoney = Created_Map.get_Money();
-        // int currentPlayer = Created_Map.get_Current_Player();
-        // uiTextures.updateInfoPanel(currentMoney, currentPlayer, turnNumber);
 
         // Отрисовка
         window.clear(sf::Color::Black);
@@ -180,10 +176,12 @@ int main() {
         for (auto it = Created_Map.get_Building_list()->Buildings.begin(); it!= Created_Map.get_Building_list()->Buildings.end(); it++) {
             it->second->set_Sprite_Scale(Created_Map.get_scale());
             Created_Map.Set_Sprite_Static_Position(it->second->get_Sprite_Pointer(), it->second->get_x_coordinate(), it->second->get_y_coordinate());
+            Created_Map.Animation();
             window.draw(*(it->second->get_Sprite_Pointer()));
         }
 
         // Отрисовка UI
+        window.draw(uiTextures.get_tex_box());
         for (size_t i = 0; i < titles->size(); ++i) {
             window.draw((*titles)[i]);
         }

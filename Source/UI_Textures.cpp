@@ -118,3 +118,58 @@ void UI_Textures::set_screen_size(float width, float height) {
     set_position_title();
     set_color_title();
 }
+
+// UI_Textures.cpp
+void UI_Textures::createInfoPanel() {
+    infoTexts.clear();
+    // Создаем 3 текстовых элемента
+    for(int i = 0; i < 3; ++i) {
+        sf::Text text(font);
+        // text.setFont(font);  // Важно: font должен быть уже загружен
+        text.setCharacterSize(24);
+        text.setFillColor(sf::Color::White);
+        infoTexts.push_back(text);
+    }
+    // Устанавливаем начальные значения
+    infoTexts[0].setString("Money: 0");
+    infoTexts[1].setString("Player: 1");
+    infoTexts[2].setString("Turn: 1");
+    // Инициализация прямоугольника
+    infoBox.setFillColor(sf::Color(100, 100, 100, 180));
+    infoBox.setOutlineThickness(2);
+    infoBox.setOutlineColor(sf::Color::White);
+}
+
+void UI_Textures::updateInfoPanel(int money, int currentPlayer, int turnNumber) {
+    // Проверка инициализации текстов
+    if(infoTexts.size() < 3) {
+        createInfoPanel();
+        return;
+    }
+    // Обновляем только текст
+    infoTexts[0].setString("Money: " + std::to_string(money));
+    infoTexts[1].setString("Player: " + std::to_string(currentPlayer));
+    infoTexts[2].setString("Turn: " + std::to_string(turnNumber));
+    // Позиционирование
+    const float padding = 20.0f;
+    float yPos = padding;
+    float maxWidth = 0;
+    for(auto& text : infoTexts) {
+        const float textWidth = text.getLocalBounds().size.x;
+        text.setPosition({SCREEN_WIDTH - textWidth - padding, yPos});
+        yPos += 40;
+        if(textWidth > maxWidth) maxWidth = textWidth;
+    }
+    // Обновляем инфо-бокс
+    infoBox.setSize(sf::Vector2f(maxWidth + 2 * padding, 130));
+    infoBox.setPosition({SCREEN_WIDTH - maxWidth - 1.5f * padding, padding / 2.0f});
+}
+
+
+std::vector<sf::Text>& UI_Textures::get_info_texts() {
+    return infoTexts;
+}
+
+sf::RectangleShape& UI_Textures::get_info_box() {
+    return infoBox;
+}

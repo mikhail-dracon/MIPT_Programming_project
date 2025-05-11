@@ -228,6 +228,10 @@ bool Map::Check_Access(std::string teg){
     return available_buildings->Check_Access(PLAYER_NUMBER , teg);
 }
 
+int Map::get_Current_Player() {
+    return PLAYER_NUMBER;
+}
+
 bool Map::Create_Mines() {
     int x =0;
     int y =0;
@@ -254,7 +258,6 @@ int Map::get_Money() {
 
 void Map::set_Cost(int money) {
     BUILDING_COST = money;
-
 }
 
 void Map::Stonks() {

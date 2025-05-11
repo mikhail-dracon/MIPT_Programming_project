@@ -12,6 +12,8 @@ class UI_Textures {
     std::vector<sf::Text> ui_title;
     float SCREEN_WIDTH;
     float SCREEN_HEIGHT;
+    std::vector<sf::Text> infoTexts;
+    sf::RectangleShape infoBox;
 
     void createTitles();
 
@@ -21,12 +23,17 @@ public:
 
     std::vector<sf::Sprite>* get_ui_textures();
     std::vector<sf::Text>* get_ui_title();
+    std::vector<sf::Text>& get_info_texts();
+    sf::RectangleShape& get_info_box();
 
     void set_screen_size(float width, float height);
     void set_position_textures();
     void set_position_title();
     void set_color_title();
     void set_transparency(int transparency);
+
+    void createInfoPanel();
+    void updateInfoPanel(int money, int currentPlayer, int turnNumber);
 };
 
 #endif

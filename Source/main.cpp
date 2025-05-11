@@ -12,6 +12,7 @@ float SPEED = 40; // Скорость перемещения по карте
 int FRAME_RATE = 60;
 std::map<std::string, float> CONSTANTS; // Словарь констант для использования в функциях
 std::string BUILDING_TEXTURE = ""; // Текстура создаваемой сущности
+static int turnNumber = 1;
 
 int main() {
     // Запуск окна
@@ -63,6 +64,7 @@ int main() {
     uiTextures.set_screen_size(SCREEN_WIDTH, SCREEN_HEIGHT);
     std::vector<sf::Text>* titles = uiTextures.get_ui_title();
     std::vector<sf::Sprite>* sprites = uiTextures.get_ui_textures();
+    uiTextures.createInfoPanel(); // Инициализация элементов интерфейса
 
     // Настраиваем игровые объекты
     Texture_List texture_list(&Created_Map, "Standart");
@@ -129,6 +131,10 @@ int main() {
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))) {
             Created_Map.Stonks();
             Created_Map.set_Player_Number();
+            int playersMoved = Created_Map.get_Current_Player();
+            if (playersMoved == 1) {
+                turnNumber++;
+            }
             sf::sleep(sf::milliseconds(10*1000/FRAME_RATE));
         }
 
@@ -152,6 +158,10 @@ int main() {
                 Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
             }
         }
+        //Обновление UI
+        // int currentMoney = Created_Map.get_Money();
+        // int currentPlayer = Created_Map.get_Current_Player();
+        // uiTextures.updateInfoPanel(currentMoney, currentPlayer, turnNumber);
 
         // Отрисовка
         window.clear(sf::Color::Black);
@@ -179,6 +189,13 @@ int main() {
         }
         for (size_t i = 0; i < sprites->size(); ++i) {
             window.draw((*sprites)[i]);
+        }
+        //Обновление UI
+        uiTextures.updateInfoPanel(Created_Map.get_Money(), Created_Map.get_Current_Player(), turnNumber);
+
+        window.draw(uiTextures.get_info_box()); // Фон
+        for (const auto& text : uiTextures.get_info_texts()) { // Используем ссылку
+            window.draw(text);
         }
 
         window.display();

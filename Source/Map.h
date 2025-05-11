@@ -51,6 +51,7 @@ public:
     int get_Money();
     void set_Cost(int money);
     void Stonks();
+    int get_Current_Player();
 };
 
 #endif //MAP_H

@@ -92,8 +92,8 @@ void UI_Textures::set_position_textures() {
     // ui_textures[3].setPosition({1550.f/2048.f * SCREEN_WIDTH, 200.f/1280.f * SCREEN_HEIGHT});
     ui_textures[0].setPosition({20.f/2048.f * SCREEN_WIDTH, 20.f/1280.f * SCREEN_HEIGHT});
     ui_textures[1].setPosition({20.f/2048.f * SCREEN_WIDTH, 340.f/1280.f * SCREEN_HEIGHT});
-    ui_textures[2].setPosition({-100.f/2048.f * SCREEN_WIDTH, 560.f/1280.f * SCREEN_HEIGHT});
-    ui_textures[3].setPosition({-200.f/2048.f * SCREEN_WIDTH, 815.f/1280.f * SCREEN_HEIGHT});
+    ui_textures[2].setPosition({-100.f/2048.f * SCREEN_WIDTH, 545.f/1280.f * SCREEN_HEIGHT});
+    ui_textures[3].setPosition({-140.f/2048.f * SCREEN_WIDTH, 800.f/1280.f * SCREEN_HEIGHT});
     ui_textures[2].setScale({1.5f, 1.5f});
     ui_textures[3].setScale({1.7f, 1.7f});
     texBox.setSize(sf::Vector2f(390.f/2048.f * SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -112,7 +112,7 @@ void UI_Textures::set_position_title() {
     ui_title[0].setPosition({ui_textures[0].getPosition().x,ui_textures[0].getPosition().y + 250.f/1280.f*SCREEN_HEIGHT});
     ui_title[1].setPosition({ui_textures[1].getPosition().x,ui_textures[1].getPosition().y + 180.f/1280.f*SCREEN_HEIGHT});
     ui_title[2].setPosition({ui_textures[2].getPosition().x + 120.f/2048.f*SCREEN_WIDTH,ui_textures[2].getPosition().y + 250.f/1280.f*SCREEN_HEIGHT});
-    ui_title[3].setPosition({ui_textures[3].getPosition().x + 220.f/2048.f*SCREEN_WIDTH,ui_textures[3].getPosition().y + 250.f/1280.f*SCREEN_HEIGHT});
+    ui_title[3].setPosition({ui_textures[3].getPosition().x + 160.f/2048.f*SCREEN_WIDTH,ui_textures[3].getPosition().y + 270.f/1280.f*SCREEN_HEIGHT});
     std::cout<<"UI_TITLES POSITIONISED"<<std::endl;
 }
 

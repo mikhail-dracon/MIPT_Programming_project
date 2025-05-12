@@ -5,6 +5,7 @@
 #include <map>
 #include "building.h"
 #include <iostream>
+#include "Health.h"
 
 // Словарь, содержащий сведения о всех постройках на карте.
 // (Он знает координаты, текстуры и владельцев каждого объекта)
@@ -14,6 +15,7 @@
 class Building_List {
     // std::multimap<std::string, building*> Buildings;
     int PLAYER_NUMBER;
+    // std::vector<Health*> healthDisplays;
 public:
     std::multimap<std::string, building*> Buildings;
     Building_List();
@@ -38,6 +40,7 @@ public:
     building* Find_Anamy(int x, int y);
     bool Hit (building* Building, int x, int y, int damage);
     // void Check_Health(building* Building);
+    // void set_healthDisplays(std::vector<Health*>*);
 };
 
 

@@ -142,20 +142,33 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
             if (Created_Map.Check_Access("Barracks") && Created_Map.get_Money()>=500){
                 Created_Map.set_Cost(500);
-                Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
-                // std::cout<<Created_Map.get_Money()<<std::endl;
+                if (Created_Map.get_Current_Player() == 1) {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
+                } else {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/2/Barracks.png");
+                }
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
             if (Created_Map.Check_Access("Warrior") && Created_Map.get_Money()>=200){
                 Created_Map.set_Cost(200);
-                Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
+                // Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
+                if (Created_Map.get_Current_Player() == 1) {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
+                } else {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/2/Warrior.png");
+                }
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) {
             if (Created_Map.Check_Access("Miner") && Created_Map.get_Money()>=500){
                 Created_Map.set_Cost(500);
-                Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
+                // Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
+                if (Created_Map.get_Current_Player() == 1) {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
+                } else {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/2/Miner.png");
+                }
             }
         }
 
@@ -190,12 +203,14 @@ int main() {
         }
         //Обновление UI
         uiTextures.updateInfoPanel(Created_Map.get_Money(), Created_Map.get_Current_Player(), turnNumber);
+        Created_Map.updateHealthDisplays();
 
         window.draw(uiTextures.get_info_box()); // Фон
         for (const auto& text : uiTextures.get_info_texts()) { // Используем ссылку
             window.draw(text);
         }
 
+        Created_Map.drawHealthDisplays(window);
         window.display();
         sf::sleep(sf::milliseconds(1000/FRAME_RATE));
 

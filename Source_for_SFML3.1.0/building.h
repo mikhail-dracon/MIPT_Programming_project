@@ -4,6 +4,7 @@
 #include <vector>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Audio.hpp>
 // #include "Map.h"
 
 class building {
@@ -20,6 +21,8 @@ protected:
     bool ability_unit; // возможность создание юнитов
     bool ability_money; // наличие денег
     int damage;
+//    sf::SoundBuffer buffer;
+//    sf::Sound sound;
 public:
     building(int x, int y, std::string texture); // базовое здоровье = 100
     virtual ~building() = default;

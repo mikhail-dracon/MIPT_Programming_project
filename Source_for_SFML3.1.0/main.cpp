@@ -104,6 +104,7 @@ int main() {
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
+                uiTextures.handleClick(event.mouseButton.x, event.mouseButton.y);
                 if (event.mouseButton.button == sf::Mouse::Button::Left)
                 {
                     Created_Map.get_pressed_sell_position(event.mouseButton.x, event.mouseButton.y);
@@ -144,22 +145,36 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
             if (Created_Map.Check_Access("Barracks") && Created_Map.get_Money()>=500){
                 Created_Map.set_Cost(500);
-                Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
-                // std::cout<<Created_Map.get_Money()<<std::endl;
+                if (Created_Map.get_Current_Player() == 1) {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/Barracks.png");
+                } else {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/2/Barracks.png");
+                }
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
             if (Created_Map.Check_Access("Warrior") && Created_Map.get_Money()>=200){
                 Created_Map.set_Cost(200);
-                Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
+                // Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
+                if (Created_Map.get_Current_Player() == 1) {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/Warrior.png");
+                } else {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/2/Warrior.png");
+                }
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) {
             if (Created_Map.Check_Access("Miner") && Created_Map.get_Money()>=500){
                 Created_Map.set_Cost(500);
-                Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
+                // Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
+                if (Created_Map.get_Current_Player() == 1) {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/Miner.png");
+                } else {
+                    Created_Map.set_BUILDING_TEXTURE("../Textures/2/Miner.png");
+                }
             }
         }
+
 
         //Обновление UI
         uiTextures.updateInfoPanel(Created_Map.get_Money(), Created_Map.get_Current_Player(), turnNumber);
@@ -198,6 +213,13 @@ int main() {
         window.draw(uiTextures.get_info_box()); // Фон
         for (const auto& text : uiTextures.get_info_texts()) { // Используем ссылку
             window.draw(text);
+        }
+
+        window.draw(uiTextures.get_toggle_button());
+        window.draw(uiTextures.get_button_label());
+        if (uiTextures.isPanelVisible) {
+            window.draw(uiTextures.get_popup_window());
+            window.draw(uiTextures.get_popup_text());
         }
 
         Created_Map.drawHealthDisplays(window);

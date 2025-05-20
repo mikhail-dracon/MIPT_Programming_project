@@ -174,6 +174,7 @@ void Map::Pressed_Check(std::vector<int>* v) {
                 Health* healthDisplay = new Health(newBuilding);
                 healthDisplays.push_back(healthDisplay);
             }
+
         } /*else {
             building_list->Select_Building(x, y, BUILDING_TEXTURE);
             building_list->Find_Building(x, y, extract_filename_M(BUILDING_TEXTURE))->set_Sprite_Origin(CELL_WIDTH / 2.0f, CELL_HEIGHT * 1.0f);

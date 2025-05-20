@@ -41,7 +41,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
     //     }
     // } // сбрасываем активность всех казарм
 
-    if (texture == "../Textures/Miner.png" && Count_Buildings("Miner")<1) {
+    if ((texture == "../Textures/Miner.png" && Count_Buildings("Miner")<1) || (texture == "../Textures/2/Miner.png" && Count_Buildings("Miner")<1)){
         for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
                 if (it->second->get_Teg() == "Mine") {
@@ -50,6 +50,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
                     building* Building = new Miner(x, y, texture);
                     Buildings.insert(std::pair<std::string, building*>(key, Building));
                     Building->set_Sprite_Color(255,255,255,180);
+                    std::cout<<"MINER"<<'\n';
                     return true;
                 }
             }
@@ -57,7 +58,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
         return false;
     }
 
-    if (texture == "../Textures/Barracks.png") {
+    if (texture == "../Textures/Barracks.png" || texture == "../Textures/2/Barracks.png") {
         for (auto it = Buildings.begin(); it != Buildings.end(); it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
                 sf::Color color = {255, 255, 255};
@@ -66,7 +67,7 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
                     it->second->set_Sprite_Color(255,255,255,180);
                     it->second->Action(-1);
                     std::string key = extract_filename(texture);
-                    building* Building = new Miner(x, y, texture);
+                    building* Building = new barrak(x, y, texture);
                     Buildings.insert(std::pair<std::string, building*>(key, Building));
                     return true;
                 }
@@ -80,9 +81,18 @@ bool Building_List::Select_Building(int x, int y, std::string texture) {
             if (it->second->get_Teg() == "Barracks"  && it->second->get_owner_id() == PLAYER_NUMBER) {
                 // it->second->Action(1);
                 std::string key = extract_filename(texture);
-                building* Building = new unit(x, y, texture);
-                Buildings.insert(std::pair<std::string, building*>(key, Building));
-                Building->set_Sprite_Color(255,255,255,180);
+                if (texture == "../Textures/Miner.png") {
+                    building* Building = new Miner(x, y, texture);
+                    Buildings.insert(std::pair<std::string, building*>(key, Building));
+                    Building->set_Sprite_Color(255,255,255,180);
+                } else {
+                    building* Building = new unit(x, y, texture);
+                    Buildings.insert(std::pair<std::string, building*>(key, Building));
+                    Building->set_Sprite_Color(255,255,255,180);
+                }
+                // building* Building = new unit(x, y, texture);
+                // Buildings.insert(std::pair<std::string, building*>(key, Building));
+                // Building->set_Sprite_Color(255,255,255,180);
                 return true;
             }
         }
@@ -105,7 +115,7 @@ bool Building_List::Add_Building(int x, int y, std::string texture) {
             return false;
         }
     }
-    if (texture == "../Textures/Barracks.png") {
+    if (texture == "../Textures/Barracks.png" || texture == "../Textures/2/Barracks.png") {
         auto range = Buildings.equal_range("Mine");
         for (auto it = range.first; it != range.second; it++) {
             if (it->second->get_x_coordinate() == x && it->second->get_y_coordinate() == y) {
@@ -230,7 +240,7 @@ bool Building_List::Move(int x, int y, int PLAYER_NUMBER) {
             }
             pair.second->Action(1);
             return false;
-            }
+        }
     }
     // 3. Если есть активный юнит - перемещаем его
     for (auto& pair : Buildings) {
@@ -315,6 +325,10 @@ building* Building_List::get_Sprite_Active_Unit() {
 void Building_List::set_PLAYER_NUMBER(int pLAYER_NUMBER) {
     PLAYER_NUMBER = pLAYER_NUMBER;
 }
+
+// void Building_List::set_healthDisplays(std::vector<Health*>* health) {
+//     healthDisplays = *health;
+// }
 bool Building_List::contains(building* build){
     for (auto it = Buildings.begin(); it != Buildings.end(); ++it) {
         if (it->second == build) return true;

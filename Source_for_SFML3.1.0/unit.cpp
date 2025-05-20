@@ -5,15 +5,13 @@
 unit::unit(int x, int y, std::string texture) : building(x, y, texture) {
     // Teg = teg;
     health = 300;
-    std::cout << "Unit have been created" << '\n';
+    std::cout<<"Unit have been created"<<'\n';
     damage = 100;
-    if (!bothBuffer.loadFromFile("../Sound/both.wav")) {
-        std::cerr << "Ошибка загрузки звука!" << std::endl;
-    } else {
-        bothSound.setBuffer(bothBuffer);
-        bothSound.play();
-    }
+//    buffer.loadFromFile("../Sound/both.wav");
+//    sound.setVolume(100);
+//    sound.play();
 }
+
 unit::~unit() {
     std::cout<<"Unit have been destroyed"<<'\n';
 }

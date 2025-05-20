@@ -21,7 +21,7 @@ void UI_Textures::createTitles() {
     }
 }
 
-UI_Textures::UI_Textures() : SCREEN_WIDTH(2048.f), SCREEN_HEIGHT(1280.f) {
+UI_Textures::UI_Textures() : SCREEN_WIDTH(0.f), SCREEN_HEIGHT(0.f) {
     if(font.loadFromFile("../Font/font.ttf")){
         createTitles();
     }
@@ -41,6 +41,7 @@ UI_Textures::UI_Textures() : SCREEN_WIDTH(2048.f), SCREEN_HEIGHT(1280.f) {
         }
     }
 
+
     // Создание спрайтов
     for (const auto& tex : tex_textures) {
         ui_textures.emplace_back(tex);
@@ -54,6 +55,12 @@ UI_Textures::UI_Textures() : SCREEN_WIDTH(2048.f), SCREEN_HEIGHT(1280.f) {
     texBox.setFillColor(sf::Color(50, 50, 50, 200));
     texBox.setOutlineThickness(2);
     texBox.setOutlineColor(sf::Color::White);
+
+    // Настройка текста кнопки
+    buttonLabel.setFont(font);
+    buttonLabel.setString("Info");
+    buttonLabel.setCharacterSize(24);
+    buttonLabel.setFillColor(sf::Color::Blue);
 }
 
 // bool UI_Textures::loadFont(const std::string& fontPath) {
@@ -109,6 +116,40 @@ void UI_Textures::set_position_textures() {
     ui_textures[3].setPosition({-200.f/2048.f * SCREEN_WIDTH, 920.f/1280.f * SCREEN_HEIGHT});
     ui_textures[2].setScale({1.5f, 1.5f});
     ui_textures[3].setScale({1.7f, 1.7f});
+
+    // Настройка кнопки-рамки
+    toggleButton.setSize(sf::Vector2f(50.f/2048.f * SCREEN_WIDTH, 50.f/1280.f * SCREEN_HEIGHT));
+    toggleButton.setFillColor(sf::Color(30, 30, 30, 10));
+    toggleButton.setOutlineThickness(2);
+    toggleButton.setOutlineColor(sf::Color::Blue);
+
+    // Настройка всплывающего окна
+    popupWindow.setSize(sf::Vector2f(1300.f/2048.f * SCREEN_WIDTH, 850.f/1280.f * SCREEN_HEIGHT));
+    popupWindow.setFillColor(sf::Color(30, 30, 30, 220));
+    popupWindow.setOutlineThickness(2);
+    popupWindow.setOutlineColor(sf::Color::White);
+
+    // Настройка текста окна
+    popupText.setFont(font);
+    popupText.setCharacterSize(24);
+    popupText.setFillColor(sf::Color::White);
+    popupText.setString("Добро пожаловать в Cosmopotia!\nУправление: "
+                        "W, A, S, D - для перемежения по карте\n         "
+                        "Q, E или Колесико мышки- для изменения маштаба");
+
+    // Позиция кнопки в правом верхнем углу
+    toggleButton.setPosition(SCREEN_WIDTH - 70.f, 150.f/1280.f * SCREEN_HEIGHT);
+
+    // Позиция окна рядом с кнопкой
+    popupWindow.setPosition(SCREEN_WIDTH/2.f - 650/2048.f * SCREEN_WIDTH, 150.f/1280.f * SCREEN_HEIGHT);
+    popupText.setPosition(popupWindow.getPosition().x + 20.f, popupWindow.getPosition().y + 20.f/1280.f * SCREEN_HEIGHT);
+
+    // Позиционируем текст по центру кнопки
+    sf::FloatRect buttonBounds = toggleButton.getGlobalBounds();
+    buttonLabel.setPosition(
+            buttonBounds.left + (buttonBounds.width - buttonLabel.getLocalBounds().width) / 2,
+            buttonBounds.top + (buttonBounds.height - buttonLabel.getLocalBounds().height) / 2 - 5);
+
 
 
 //    float maxHeight = 0;
@@ -178,4 +219,20 @@ void UI_Textures::updateInfoPanel(int money, int currentPlayer, int turnNumber) 
 
     infoBox.setSize(sf::Vector2f(maxWidth + 2 * padding, 130));
     infoBox.setPosition(SCREEN_WIDTH - maxWidth - 1.5f * padding, 0);
+}
+
+void UI_Textures::handleClick(int mouseX, int mouseY) {
+    // Проверка клика по кнопке
+    if (toggleButton.getGlobalBounds().contains(mouseX, mouseY)) {
+        isPanelVisible = !isPanelVisible;
+    }
+}
+
+void UI_Textures::updatePopupText(const std::string& text) {
+    popupText.setString(text);
+}
+
+void UI_Textures::updateButtonLabel(const std::string& text) {
+    buttonLabel.setString(text);
+    set_position_textures();
 }

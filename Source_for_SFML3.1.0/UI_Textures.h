@@ -15,6 +15,11 @@ class UI_Textures {
     std::vector<sf::Text> infoTexts;
     sf::RectangleShape infoBox;
     sf::RectangleShape texBox;
+    sf::RectangleShape toggleButton;    // Кнопка-рамка
+    sf::RectangleShape popupWindow;     // Всплывающее окно
+    sf::Text popupText;                 // Текст внутри окна
+    sf::Text buttonLabel; // Надпись на кнопке
+
 
     void createTitles();
 
@@ -36,6 +41,15 @@ public:
 
     void createInfoPanel();
     void updateInfoPanel(int money, int currentPlayer, int turnNumber);
+
+    void handleClick(int mouseX, int mouseY); // Обработка кликов
+    void updatePopupText(const std::string& text); // Обновление текста окна
+    sf::RectangleShape& get_toggle_button() { return toggleButton; }
+    sf::RectangleShape& get_popup_window() { return popupWindow; }
+    sf::Text& get_button_label() { return buttonLabel; }
+    sf::Text& get_popup_text() { return popupText; }
+    bool isPanelVisible;
+    void updateButtonLabel(const std::string& text);
 };
 
 #endif
